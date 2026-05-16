@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jorge Doná — Sistema de Estudos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1714;--ink2:#4a4540;--ink3:#9a9088;
+  --paper:#faf8f4;--paper2:#f2efe8;--paper3:#e8e3d8;
+  --accent:#c8571a;--accent2:#e8a020;--blue:#1e5fa8;
+  --green:#2d7a4f;--red:#c62828;--purple:#6a1b9a;
+  --line:rgba(26,23,20,0.1);--sw:280px;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:flex;min-height:100vh;font-size:15px;}
+
+/* ─── SIDEBAR ─── */
+#sb{width:var(--sw);min-width:var(--sw);background:var(--ink);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow:hidden;}
+.sb-logo{padding:22px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sb-logo-name{font-family:var(--serif);font-size:15px;font-weight:700;color:#fff;line-height:1.3;}
+.sb-logo-sub{font-size:10px;color:var(--ink3);margin-top:2px;letter-spacing:.08em;text-transform:uppercase;}
+.sb-search{padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.sb-search input{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-family:var(--sans);font-size:12px;padding:7px 10px;outline:none;transition:border-color .2s;}
+.sb-search input::placeholder{color:var(--ink3);}
+.sb-search input:focus{border-color:var(--accent);}
+.sb-nav{flex:1;overflow-y:auto;padding:4px 0 10px;}
+.sb-nav::-webkit-scrollbar{width:3px;}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);padding:12px 18px 4px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;}
+.nav-item:hover{background:rgba(255,255,255,0.05);}
+.nav-item.active{background:rgba(200,87,26,0.15);border-left-color:var(--accent);}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.nav-text{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.35;}
+.nav-item.active .nav-text{color:#fff;}
+.nav-badge{margin-left:auto;font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:10px;font-weight:500;}
+.nav-badge-red{margin-left:auto;font-size:10px;background:var(--red);color:#fff;padding:1px 6px;border-radius:10px;font-weight:500;}
+.sb-footer{padding:10px 18px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:var(--ink3);}
+.sb-curso{padding:10px 18px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.sb-curso-nome{font-size:12px;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:3px;font-weight:500;}
+.sb-curso-data{font-size:10px;color:var(--accent2);margin-bottom:3px;}
+.sb-curso-link{font-size:10px;color:#6bb5ff;text-decoration:none;display:block;}
+.sb-curso-link:hover{text-decoration:underline;}
+
+/* ─── MAIN ─── */
+#main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+#topbar{background:var(--paper);border-bottom:1px solid var(--line);padding:0 36px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.tb-left{font-size:13px;color:var(--ink3);}
+.tb-left span{color:var(--ink);font-weight:500;}
+.tb-right{display:flex;gap:7px;align-items:center;}
+.tb-date{font-family:var(--mono);font-size:12px;color:var(--ink3);}
+.btn{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 13px;border-radius:7px;cursor:pointer;border:none;transition:all .15s;}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink2);}
+.btn-ghost:hover{background:var(--paper2);}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#b34d16;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-sm{padding:4px 10px;font-size:11px;}
+
+/* ─── VIEWS ─── */
+#content{flex:1;padding:32px 36px 60px;max-width:1100px;margin:0 auto;width:100%;}
+
+/* ─── DASHBOARD ─── */
+.dash-greeting{margin-bottom:28px;}
+.dash-greeting h1{font-family:var(--serif);font-size:28px;font-weight:700;margin-bottom:4px;}
+.dash-greeting p{font-size:14px;color:var(--ink3);}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#fff;border:1px solid var(--paper3);border-radius:12px;padding:16px 18px;}
+.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px;}
+.kpi-val{font-family:var(--mono);font-size:28px;font-weight:500;line-height:1;}
+.kpi-sub{font-size:11px;color:var(--ink3);margin-top:4px;}
+.kpi.green .kpi-val{color:var(--green);}
+.kpi.blue .kpi-val{color:var(--blue);}
+.kpi.orange .kpi-val{color:var(--accent);}
+.kpi.red .kpi-val{color:var(--red);}
+.kpi.purple .kpi-val{color:var(--purple);}
+
+/* ─── PAINEL PENDÊNCIAS ─── */
+.pendencias-banner{background:linear-gradient(135deg,#7f1010,#b71c1c);border-radius:14px;padding:18px 22px;margin-bottom:20px;color:#fff;border:2px solid #c62828;}
+.pendencias-banner-titulo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#ffcdd2;margin-bottom:6px;}
+.pendencias-banner-count{font-family:var(--mono);font-size:36px;font-weight:500;line-height:1;margin-bottom:4px;}
+.pendencias-banner-sub{font-size:13px;color:#ffcdd2;margin-bottom:14px;}
+.pendencias-lista{display:flex;flex-direction:column;gap:6px;}
+.pendencia-item{background:rgba(255,255,255,0.1);border-radius:8px;padding:9px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;}
+.pendencia-item:hover{background:rgba(255,255,255,0.18);}
+.pendencia-item-texto{font-size:12px;color:#fff;flex:1;line-height:1.4;}
+.pendencia-item-data{font-size:10px;color:#ffcdd2;white-space:nowrap;font-family:var(--mono);}
+.pendencia-check{width:18px;height:18px;border:2px solid rgba(255,255,255,0.5);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.pendencia-check:hover{border-color:#fff;background:rgba(255,255,255,0.2);}
+.pendencias-ver-mais{font-size:12px;color:#ffcdd2;text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline;}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
+.dash-grid.full{grid-template-columns:1fr;}
+.card{background:#fff;border:1px solid var(--paper3);border-radius:12px;overflow:hidden;}
+.card-head{padding:14px 18px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.card-head-title{font-size:13px;font-weight:600;color:var(--ink);}
+.card-head-sub{font-size:11px;color:var(--ink3);}
+.card-body{padding:14px 18px;}
+
+/* ─── PROGRESS BARS ─── */
+.prog-item{margin-bottom:12px;}
+.prog-item:last-child{margin-bottom:0;}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:5px;}
+.prog-pct{font-family:var(--mono);font-size:11px;color:var(--ink3);}
+.prog-track{height:7px;background:var(--paper2);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;transition:width .4s ease;}
+.fill-green{background:var(--green);}
+.fill-blue{background:var(--blue);}
+.fill-orange{background:var(--accent);}
+.fill-red{background:var(--red);}
+.fill-purple{background:var(--purple);}
+.fill-gold{background:var(--accent2);}
+
+/* ─── TASK ITEMS ─── */
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
+.task-item:last-child{border-bottom:none;}
+.task-item.atrasado-item{background:#fff8f8;margin:0 -18px;padding:9px 18px;border-left:3px solid var(--red);}
+.task-cb{width:16px;height:16px;border:2px solid var(--paper3);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;}
+.task-cb:hover{border-color:var(--green);}
+.task-cb.checked{background:var(--green);border-color:var(--green);}
+.task-cb.checked::after{content:'✓';font-size:9px;color:#fff;font-weight:700;}
+.task-content{flex:1;}
+.task-title{font-size:13px;color:var(--ink);line-height:1.4;}
+.task-title.done{text-decoration:line-through;color:var(--ink3);}
+.task-meta{font-size:11px;color:var(--ink3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.task-tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500;}
+.tag-puc{background:#e3f0ff;color:var(--blue);}
+.tag-carreira{background:#e8f5e9;color:var(--green);}
+.tag-ingles{background:#fff3e0;color:#e65100;}
+.tag-review{background:#fce4ec;color:#880e4f;}
+.tag-project{background:#ede7f6;color:var(--purple);}
+.tag-atrasado{background:#ffebee;color:var(--red);font-weight:600;}
+.task-late-badge{font-size:10px;color:#fff;background:var(--red);padding:1px 6px;border-radius:10px;font-weight:600;}
+
+/* ─── SEÇÃO ATRASADAS ─── */
+.atrasadas-section{background:#fff5f5;border:2px solid #ffcdd2;border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.atrasadas-header{background:var(--red);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
+.atrasadas-header-title{font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;}
+.atrasadas-header-count{font-family:var(--mono);font-size:11px;background:rgba(255,255,255,0.25);color:#fff;padding:2px 8px;border-radius:10px;}
+.atrasadas-body{padding:0 18px;}
+
+/* ─── AGENDA ─── */
+.agenda-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.agenda-title{font-family:var(--serif);font-size:18px;font-weight:600;flex:1;}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:20px;}
+.day-col{background:#fff;border:1px solid var(--paper3);border-radius:10px;overflow:hidden;min-height:120px;}
+.day-col.today{border-color:var(--accent);box-shadow:0 0 0 2px rgba(200,87,26,0.15);}
+.day-col.past{opacity:.85;}
+.day-head{padding:8px 10px 6px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;}
+.day-name{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);}
+.day-num{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--ink);line-height:1.1;}
+.day-col.today .day-num{color:var(--accent);}
+.day-tasks{padding:6px 8px;}
+.dt{font-size:11px;line-height:1.4;padding:3px 6px;border-radius:5px;margin-bottom:3px;cursor:pointer;transition:opacity .15s;}
+.dt:hover{opacity:.8;}
+.dt.done-task{opacity:.5;text-decoration:line-through;}
+.dt.late-task{border-left:3px solid var(--red);padding-left:4px;}
+.dt-puc{background:#e3f0ff;color:#1a4f8f;}
+.dt-carreira{background:#e8f5e9;color:#1b5e20;}
+.dt-ingles{background:#fff3e0;color:#bf360c;}
+.dt-review{background:#fce4ec;color:#880e4f;}
+.dt-project{background:#ede7f6;color:#4a148c;}
+.day-add{font-size:11px;color:var(--ink3);padding:3px 8px;cursor:pointer;opacity:.6;}
+.day-add:hover{opacity:1;color:var(--accent);}
+
+/* ─── METAS ─── */
+.meta-phase{margin-bottom:20px;}
+.meta-phase-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.phase-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;}
+.pb-1{background:#e3f0ff;color:var(--blue);}
+.pb-2{background:#fff3e0;color:#e65100;}
+.pb-3{background:#e8f5e9;color:var(--green);}
+.meta-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);}
+.meta-item:last-child{border-bottom:none;}
+.meta-cb{width:16px;height:16px;border:2px solid var(--paper3);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;}
+.meta-cb.checked{background:var(--accent);border-color:var(--accent);}
+.meta-cb.checked::after{content:'✓';font-size:9px;color:#fff;font-weight:700;}
+.meta-text{font-size:13px;color:var(--ink);line-height:1.45;flex:1;}
+.meta-text.done{text-decoration:line-through;color:var(--ink3);}
+.meta-deadline{font-size:11px;color:var(--ink3);margin-top:2px;}
+.meta-deadline.urgent{color:var(--red);font-weight:500;}
+
+/* ─── CAPÍTULOS ─── */
+.chapter-header{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--line);}
+.chapter-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.chapter-num{font-family:var(--mono);font-size:11px;font-weight:500;background:var(--ink);color:#fff;padding:3px 9px;border-radius:4px;}
+.chapter-tag{font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:2px 8px;border-radius:4px;}
+.chapter-title{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1.2;margin-bottom:8px;}
+.chapter-sub{font-size:14px;color:var(--ink2);font-weight:300;}
+.topic-pill{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--paper2);border:1px solid var(--paper3);color:var(--ink2);}
+.section{margin-bottom:36px;}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.sec-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.i-res{background:#fff3e0;}.i-exp{background:#e3f0ff;}.i-ann{background:#e8f5e9;}.i-quiz{background:#ede7f6;}.i-full{background:#e0f2f1;}
+.sec-title{font-family:var(--serif);font-size:17px;font-weight:600;}
+.sec-rule{flex:1;height:1px;background:var(--line);}
+.prose{font-size:14px;line-height:1.85;color:var(--ink2);}
+.prose p{margin-bottom:11px;}
+.prose strong{color:var(--ink);font-weight:500;}
+.alert-box,.tip-box,.info-box{border-radius:8px;padding:11px 15px;margin:10px 0;font-size:13px;line-height:1.65;}
+.alert-box{background:#fff3e0;border-left:4px solid var(--accent);}
+.tip-box{background:#e8f5e9;border-left:4px solid var(--green);}
+.info-box{background:#e3f0ff;border-left:4px solid var(--blue);}
+.divider-orn{text-align:center;color:var(--paper3);font-size:16px;margin:24px 0;letter-spacing:10px;}
+
+/* ─── QUIZ ─── */
+.quiz-wrap{background:#fff;border:1px solid var(--paper3);border-radius:14px;overflow:hidden;}
+.quiz-top{background:linear-gradient(135deg,#4a148c,#7b1fa2);padding:18px 22px;color:#fff;}
+.quiz-top-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:3px;}
+.quiz-top-sub{font-size:12px;opacity:.8;}
+.qprog-bar{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:12px;}
+.qprog-fill{height:100%;background:#fff;border-radius:2px;transition:width .3s;}
+.quiz-body{padding:24px 22px;}
+.q-num{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:16px;line-height:1.6;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:1.5px solid var(--paper3);border-radius:8px;cursor:pointer;transition:all .15s;background:var(--paper);}
+.q-opt:hover:not(.disabled){border-color:#7b1fa2;background:#f3e5f5;}
+.q-opt.selected{border-color:#7b1fa2;background:#f3e5f5;}
+.q-opt.correct{border-color:var(--green);background:#e8f5e9;}
+.q-opt.wrong{border-color:var(--red);background:#ffebee;}
+.q-opt.disabled{cursor:default;}
+.q-opt-letter{font-family:var(--mono);font-size:12px;color:#7b1fa2;width:18px;flex-shrink:0;}
+.q-opt.correct .q-opt-letter{color:var(--green);}
+.q-opt.wrong .q-opt-letter{color:var(--red);}
+.q-opt-text{font-size:13px;color:var(--ink2);line-height:1.5;}
+.q-fb{margin-top:14px;padding:10px 14px;border-radius:7px;font-size:13px;line-height:1.6;display:none;}
+.q-fb.show{display:block;}
+.q-fb.correct{background:#e8f5e9;color:#1b5e20;border-left:3px solid var(--green);}
+.q-fb.wrong{background:#ffebee;color:#b71c1c;border-left:3px solid var(--red);}
+.quiz-foot{padding:0 22px 22px;display:flex;justify-content:space-between;align-items:center;}
+.qnav{font-family:var(--sans);font-size:13px;font-weight:500;padding:9px 20px;border-radius:7px;cursor:pointer;border:none;}
+.qnav.next{background:#7b1fa2;color:#fff;}
+.qnav.prev{background:transparent;border:1px solid var(--paper3);color:var(--ink2);}
+.q-counter{font-size:12px;color:var(--ink3);}
+.quiz-result{padding:30px 24px;text-align:center;}
+.qr-score{font-family:var(--mono);font-size:52px;font-weight:500;margin-bottom:6px;}
+.qr-score.great{color:var(--green);}.qr-score.good{color:var(--accent2);}.qr-score.low{color:var(--red);}
+.qr-label{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:4px;}
+.qr-sub{font-size:13px;color:var(--ink3);margin-bottom:20px;}
+.qr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:16px 0 22px;}
+.qr-item{padding:8px 4px;border-radius:7px;font-size:11px;text-align:center;}
+.qr-ok{background:#e8f5e9;color:#2e7d32;}.qr-fail{background:#ffebee;color:#c62828;}
+
+/* ─── PROVAS ─── */
+.prova-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:22px;}
+.prova-tab{font-size:13px;font-weight:500;padding:9px 16px;cursor:pointer;border:none;background:transparent;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-2px;}
+.prova-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.prova-card{background:#fff;border:1px solid var(--paper3);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.pc-head{padding:16px 20px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;}
+.pc-title{font-family:var(--serif);font-size:16px;font-weight:700;}
+.pc-sub{font-size:11px;color:var(--ink3);margin-top:2px;}
+.pc-badge{font-size:10px;padding:2px 8px;border-radius:10px;}
+.ps{background:#e3f0ff;color:var(--blue);}
+.pm{background:#fff3e0;color:#e65100;}
+.pt{background:#fce4ec;color:#880e4f;}
+.pc-body{padding:18px 20px;}
+.pq{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+.pq:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.pq-num{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:5px;}
+.pq-text{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px;line-height:1.6;}
+.pq-opts{display:flex;flex-direction:column;gap:6px;}
+.pq-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;cursor:pointer;transition:all .15s;background:var(--paper);}
+.pq-opt:hover:not(.disabled){border-color:var(--accent2);}
+.pq-opt.selected{border-color:var(--accent2);background:#fff8e1;}
+.pq-opt.correct{border-color:var(--green);background:#e8f5e9;}
+.pq-opt.wrong{border-color:var(--red);background:#ffebee;}
+.pq-opt.disabled{cursor:default;}
+.pq-letter{font-family:var(--mono);font-size:11px;color:var(--ink3);width:16px;flex-shrink:0;}
+.pq-text2{font-size:12px;color:var(--ink2);}
+.disc-area{width:100%;min-height:80px;font-family:var(--sans);font-size:13px;border:1px solid var(--paper3);border-radius:7px;padding:9px 12px;resize:vertical;outline:none;}
+.disc-area:focus{border-color:var(--accent);}
+.pf{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+.ptimer{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink2);}
+.ptimer.urgent{color:var(--red);}
+.hist-table{width:100%;border-collapse:collapse;font-size:12px;}
+.hist-table th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);}
+.hist-table td{padding:8px 12px;border-bottom:1px solid var(--line);color:var(--ink2);}
+.hs-great{color:var(--green);font-family:var(--mono);}
+.hs-good{color:var(--accent2);font-family:var(--mono);}
+.hs-low{color:var(--red);font-family:var(--mono);}
+
+/* ─── MODAL ─── */
+#modal-ov{display:none;position:fixed;inset:0;background:rgba(26,23,20,.75);z-index:200;align-items:center;justify-content:center;padding:20px;}
+#modal-ov.open{display:flex;}
+#modal-box{background:var(--paper);border-radius:14px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal-title{font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--ink3);margin-bottom:20px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;font-family:var(--sans);font-size:13px;background:#fff;border:1px solid var(--paper3);border-radius:7px;padding:9px 12px;color:var(--ink);outline:none;transition:border-color .2s;resize:vertical;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);}
+.fg textarea{min-height:80px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;}
+.modal-sec{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px;margin:18px 0 12px;}
+
+/* ─── SEARCH ─── */
+#search-results{display:none;}
+.sh{padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+.sh:hover .sh-title{color:var(--accent);}
+.sh-ch{font-size:10px;color:var(--ink3);text-transform:uppercase;margin-bottom:2px;}
+.sh-title{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);transition:color .15s;}
+.sh-snip{font-size:12px;color:var(--ink2);line-height:1.5;}
+mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
+
+/* ─── WELCOME ─── */
+#welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px;}
+.wlc-icon{font-size:44px;margin-bottom:16px;}
+.wlc-title{font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:8px;}
+.wlc-sub{font-size:14px;color:var(--ink3);margin-bottom:22px;line-height:1.6;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.chapter-header,.section,.kpi-row,.dash-grid{animation:fadeUp .35s ease;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.7;}}
+.pulse{animation:pulse 2s ease-in-out infinite;}
+</style>
+</head>
+<body>
+
+<aside id="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-name">Jorge Doná</div>
+    <div class="sb-logo-sub">PUCPR · Carreira · 2026</div>
+  </div>
+  <div class="sb-search"><input type="text" id="search-input" placeholder="🔍 Pesquisar..." autocomplete="off"></div>
+  <nav class="sb-nav" id="nav-list"></nav>
+  <div class="sb-footer" id="sb-footer"></div>
+</aside>
+
+<div id="main">
+  <header id="topbar">
+    <div class="tb-left" id="breadcrumb">Sistema &rsaquo; <span>Início</span></div>
+    <div class="tb-right">
+      <span class="tb-date" id="tb-date"></span>
+      <button class="btn btn-ghost btn-sm" onclick="showView('agenda')">📅 Agenda</button>
+      <button class="btn btn-ghost btn-sm" onclick="showProvas()">📊 Provas</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('aula')">+ Nova Aula</button>
+    </div>
+  </header>
+  <main id="content">
+    <div id="guia-view" style="display:none"></div>
+    <div id="welcome">
+      <div class="wlc-icon">🎯</div>
+      <div class="wlc-title">Bem-vindo, Jorge</div>
+      <div class="wlc-sub">Seu sistema completo de estudos e carreira.<br>Selecione uma seção na barra lateral.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-primary" onclick="showView('dashboard')">📊 Dashboard</button>
+        <button class="btn btn-blue" onclick="showView('agenda')">📅 Agenda</button>
+        <button class="btn btn-green" onclick="showView('metas')">🎯 Metas</button>
+      </div>
+    </div>
+    <div id="dashboard-view" style="display:none"></div>
+    <div id="agenda-view" style="display:none"></div>
+    <div id="metas-view" style="display:none"></div>
+    <div id="chapter-view" style="display:none"></div>
+    <div id="provas-view" style="display:none"></div>
+    <div id="search-results"></div>
+  </main>
+</div>
+
+<div id="modal-ov">
+  <div id="modal-box">
+    <div class="modal-title" id="modal-title">Nova Aula</div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <div id="modal-content"></div>
+    <div class="modal-acts" id="modal-acts"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════════════
+const SK = 'jorge_sistema_v5';
+let DB = {aulas:[], tarefas:[], historico:[], metas:[], streaks:{}};
+
+function load(){
+  try{
+    // tenta migrar do v4
+    const old = localStorage.getItem('jorge_sistema_v4');
+    const cur = localStorage.getItem(SK);
+    if(cur){const d=JSON.parse(cur);DB={...DB,...d};}
+    else if(old){const d=JSON.parse(old);DB={...DB,...d};}
+    if(!DB.aulas.find(a=>a.id==='cap0'))DB.aulas.unshift(CAP0);
+  }catch(e){DB.aulas=[CAP0];}
+}
+function save(){try{localStorage.setItem(SK,JSON.stringify(DB));}catch(e){}}
+
+// ══════════════════════════════════════════════════
+// HELPERS DE DATA
+// ══════════════════════════════════════════════════
+function fmtDate(d){return d.toISOString().slice(0,10);}
+function today(){return fmtDate(new Date());}
+function todayPlus(n){const d=new Date();d.setDate(d.getDate()+n);return fmtDate(d);}
+function fmtDisplay(ds){
+  if(!ds)return'';
+  const[y,m,d]=ds.split('-');
+  const months=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${d} ${months[parseInt(m)-1]}`;
+}
+function fmtFull(ds){
+  const days=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const d=new Date(ds+'T12:00:00');
+  return `${days[d.getDay()]}, ${fmtDisplay(ds)}`;
+}
+function diasAtraso(ds){
+  const diff=Math.floor((new Date(today()+'T12:00:00')-new Date(ds+'T12:00:00'))/(1000*60*60*24));
+  return diff;
+}
+
+// ══════════════════════════════════════════════════
+// LÓGICA DE PENDÊNCIAS — NÚCLEO DA MUDANÇA
+// ══════════════════════════════════════════════════
+// Tarefa é "atrasada" se: data < hoje E done===false
+// Tarefa é "de hoje" se: data === hoje
+// Tarefa é "futura" se: data > hoje
+// NUNCA reagendamos automaticamente — o usuário decide
+
+function getAtrasadas(){
+  return DB.tarefas
+    .filter(t => !t.done && t.data < today())
+    .sort((a,b)=>a.data.localeCompare(b.data));
+}
+function getHoje(){
+  return DB.tarefas.filter(t=>t.data===today());
+}
+function getAmanha(){
+  return DB.tarefas.filter(t=>t.data===todayPlus(1));
+}
+function getPendentesHoje(){
+  return DB.tarefas.filter(t=>t.data===today()&&!t.done);
+}
+function totalPendentes(){
+  return DB.tarefas.filter(t=>!t.done&&t.data<=today()).length;
+}
+
+// ══════════════════════════════════════════════════
+// CAP 0
+// ══════════════════════════════════════════════════
+const CAP0_QUIZ=[
+  {q:"Qual é o principal risco de ter muita flexibilidade no EAD sem planejamento?",opts:["Estudar em excesso","Falta de professores","Procrastinação","Excesso de autonomia"],correct:2,exp:"A flexibilidade sem planejamento abre espaço para a procrastinação."},
+  {q:"O método Pomodoro sugere qual ciclo de estudos?",opts:["50 min / 10 min","30 min / 10 min","25 min / 5 min","45 min / 15 min"],correct:2,exp:"25 minutos de foco total + 5 minutos de pausa leve."},
+  {q:"O que significa a sigla AVA?",opts:["Área Virtual de Avaliação","Ambiente Virtual de Aprendizagem","Acesso Virtual Acadêmico","Atividade Virtual da Aula"],correct:1,exp:"AVA = Ambiente Virtual de Aprendizagem — a sala de aula online da PUCPR."},
+  {q:"Qual é a carga horária semanal ideal recomendada?",opts:["10 horas","15 horas","25 horas","20 horas"],correct:3,exp:"20 horas semanais é a carga ideal."},
+  {q:"O que é a 'meta mínima' no sistema de três metas?",opts:["Meta para semanas ideais","Mínimo para não parar em semanas difíceis","Número mínimo de disciplinas","Horas mínimas por dia"],correct:1,exp:"Meta mínima = o essencial para não parar completamente."},
+  {q:"Qual a diferença entre estudo ativo e passivo?",opts:["Dia vs. noite","Tecnologia vs. livro","Produz material vs. só assiste/lê","Grupo vs. individual"],correct:2,exp:"Ativo: resumo + explicar em voz alta + resolver questões. Passivo: só assistir."},
+  {q:"O que é o Notebook LM e sua principal vantagem?",opts:["Software de contabilidade","IA que responde com seus próprios materiais","App de notas offline","Plataforma de videoaulas"],correct:1,exp:"Google Gemini — você carrega os textos e a IA responde com base neles."},
+  {q:"Por que reservar horários específicos para descanso?",opts:["Ter mais tempo livre","Evitar culpa e descansar de fato","PUCPR exige","Sincronizar com colegas"],correct:1,exp:"Descanso planejado é descanso pleno e restaurador."},
+  {q:"Qual setor apoia estudantes em saúde mental?",opts:["PUC Carreiras","PUC Cultura","PUC Acolhe","NPP"],correct:2,exp:"PUC Acolhe — quatro eixos: aprendizagem, saúde mental, inclusão, proteção social."},
+  {q:"Qual postura é fundamental além do aprendizado técnico?",opts:["Focar só nas matérias","Abrir-se a novos caminhos e valorizar crescimento pessoal","Seguir rigidamente o plano inicial","Evitar extracurriculares"],correct:1,exp:"O ensino superior desenvolve soft skills silenciosamente."}
+];
+const CAP0={
+  id:'cap0',num:0,tipo:'Integração / Orientações',
+  titulo:'Integração e Metodologia de Estudos no EAD',
+  subtitulo:'Semana de integração PUCPR · Palestrante: Valdecir (PUC Acolhe)',
+  topicos:['Autonomia','Rotina','Gestão de tempo','Pomodoro','Saúde mental','Notebook LM'],
+  semana:1,mes:1,trimestre:1,
+  resumo:`Os 5 pilares da aula inaugural:\n\n1. Expectativas e metas claras — Saber por que você está aqui sustenta a motivação.\n\n2. Autonomia — No EAD o estudante é o centro do aprendizado.\n\n3. Rotina realista, flexível e responsável — Sistema de 3 metas: mínima, ideal e superada.\n\n4. Habilidades de estudo ativas — Produzir material ao estudar.\n\n5. Equilíbrio integral — Sono, alimentação, atividade física e descanso PLANEJADO.\n\nDica de ouro: Todo domingo, 1 hora para planejar a semana.\n\nCarga ideal: 20 horas semanais.`,
+  explicacao:`1. Por que definir metas antes de começar?\n\nUm propósito claro funciona como âncora nos momentos de cansaço.\n\n2. A diferença entre escola e universidade\n\nNa escola o professor corre atrás do aluno. Na universidade a responsabilidade muda de lado.\n\n3. Sistema de três metas\n\nMeta mínima: o essencial para não parar completamente.\nMeta ideal: o ritmo normal do curso.\nMeta superada: semanas boas — adiantar conteúdo.\n\n4. Técnica Pomodoro aplicada\n\n25 min de foco + 5 min de pausa. Na pausa: NÃO pegue o celular.\n\n5. Estudo ativo vs. passivo\n\nPassivo: só assistir. Ativo: assistir + resumo + explicar + questão.`,
+  anotacoes:`⚠️ Quiz da Semana de Integração disponível a partir de segunda-feira. Mínimo 7.\n\n✔ Todo domingo: 1 hora para planejar a semana.\n\n✔ Na pausa do Pomodoro: não pegue o celular.\n\n✔ Sempre produza algo ao estudar: resumo, mapa, flashcard.\n\n• AVA = Ambiente Virtual de Aprendizagem\n• 20h semanais = carga ideal\n• PUC Acolhe = apoio estudantil (4 eixos)`,
+  completo:`Transcrição da aula inaugural — Semana de Integração PUCPR.\n\nESTRUTURA DO AVA\nDisciplina de ambientação: GPS da graduação. Quiz da semana de integração: liberado na segunda-feira, 5 tentativas, mínimo 7.\n\nPUC ACOLHE — 4 eixos: Aprendizagem / Saúde mental / Inclusão / Proteção social\n\nCONTEÚDO\n1. EXPECTATIVAS E METAS: clareza sobre por que escolheu o curso.\n2. AUTONOMIA NO EAD: estudante é o centro / 1h/semana (domingo) para planejar.\n3. SISTEMA DE 3 METAS: mínima / ideal / superada.\n4. HABILIDADES DE ESTUDO: sempre produzir material / revisão regular.\n5. POMODORO: 25 min foco + 5 min pausa / pausa sem celular.\n6. ROTINA: mapear dia a dia / reservar horários inclusive para DESCANSO.`,
+  quiz:CAP0_QUIZ
+};
+
+// ══════════════════════════════════════════════════
+// METAS DEFAULT
+// ══════════════════════════════════════════════════
+const METAS_DEFAULT=[
+  {id:'m1',fase:1,texto:'Iniciar curso Power BI — Data Science Academy (gratuito)',link:'https://datascienceacademy.com.br/course/microsoft-power-bi-para-business-intelligence-e-data-science',prazo:'2026-07-01',done:false},
+  {id:'m2',fase:1,texto:'Iniciar Excel/BI — Fundação Bradesco (gratuito, peso no CV)',link:'https://ev.org.br',prazo:'2026-07-15',done:false},
+  {id:'m3',fase:1,texto:'Criar primeiro dashboard com dados reais da Gaideski',prazo:'2026-08-31',done:false},
+  {id:'m4',fase:1,texto:'Focar nas disciplinas-chave: Contabilidade Geral e Análise de Demonstrações',prazo:'2026-11-30',done:false},
+  {id:'m5',fase:1,texto:'Atualizar LinkedIn com posicionamento: Financial Data Analyst',prazo:'2026-07-31',done:false},
+  {id:'m6',fase:2,texto:'Iniciar Google Data Analytics — Coursera (certificado Google)',link:'https://coursera.org/professional-certificates/google-data-analytics',prazo:'2026-11-01',done:false},
+  {id:'m7',fase:2,texto:'Concluir SQL para Análise — Mode Analytics (gratuito)',link:'https://mode.com/sql-tutorial',prazo:'2027-01-31',done:false},
+  {id:'m8',fase:2,texto:'Iniciar Python — Data Science Academy (gratuito)',link:'https://datascienceacademy.com.br/course/python-fundamentos',prazo:'2027-03-31',done:false},
+  {id:'m9',fase:2,texto:'Curso BI: Ferramentas e Métodos — FGV (peso máximo no CV)',link:'https://educacao-executiva.fgv.br',prazo:'2027-06-30',done:false},
+  {id:'m10',fase:2,texto:'Construir portfólio: 3 projetos reais no GitHub + LinkedIn',prazo:'2027-10-31',done:false},
+  {id:'m11',fase:3,texto:'Preparação Microsoft PL-300 — Microsoft Learn (gratuito)',link:'https://learn.microsoft.com/pt-br/training/courses/pl-300t00',prazo:'2028-03-31',done:false},
+  {id:'m12',fase:3,texto:'Realizar exame PL-300 — Power BI Data Analyst Associate',link:'https://learn.microsoft.com/pt-br/certifications/power-bi-data-analyst-associate',prazo:'2028-06-30',done:false},
+  {id:'m13',fase:3,texto:'Candidatura ativa: Financial Data Analyst — Volvo / Bosch / Mondelez',prazo:'2028-09-30',done:false},
+  {id:'m14',fase:3,texto:'CRC em mãos + portfólio consolidado = Controller Analítico',prazo:'2029-05-31',done:false},
+];
+
+// ══════════════════════════════════════════════════
+// TAREFAS INICIAIS
+// ══════════════════════════════════════════════════
+function gerarTarefasIniciais(){
+  if(DB.tarefas && DB.tarefas.length>0) return;
+  const DC='https://pucpr.grupoa.education/plataforma/course/4917624';
+  const GN='https://pucpr.grupoa.education/plataforma/course/4917741';
+  const MF='https://pucpr.grupoa.education/plataforma/course/4917755';
+  const DSA='https://www.datascienceacademy.com.br/cursosgratuitos';
+  const EV='https://www.ev.org.br';
+  DB.tarefas=[
+    {id:'t01',data:'2026-05-09',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Atividade Diagnóstica (URGENTE — prazo 17/mai)',link:`${DC}/content/78970107`},
+    {id:'t02',data:'2026-05-09',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — [Unidade 01] Aspectos Fundamentais da Contabilidade',link:`${DC}/content/78970106`},
+    {id:'t03',data:'2026-05-09',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Videoaula: Introdução à contabilidade na prática',link:`${DC}/content/78970109`},
+    {id:'t04',data:'2026-05-09',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Infográfico: Vamos falar sobre Contabilidade?',link:`${DC}/content/78970108`},
+    {id:'t05',data:'2026-05-09',tipo:'carreira',done:false,titulo:'💼 Power BI — Criar conta na DSA e iniciar Módulo 1 (gratuito)',link:DSA},
+    // Semana 1
+    {id:'s1dc1',data:'2026-05-11',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 1: Apresentação da Semana',link:DC},
+    {id:'s1dc2',data:'2026-05-12',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 1: Atividade Diagnóstica',link:`${DC}/content/78970107`},
+    {id:'s1dc3',data:'2026-05-13',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 1: Videoaula Introdução',link:`${DC}/content/78970109`},
+    {id:'s1gn1',data:'2026-05-11',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 1: Acessar e iniciar',link:GN},
+    {id:'s1mf1',data:'2026-05-11',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 1: Acessar e iniciar',link:MF},
+    {id:'s1cr1',data:'2026-05-12',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Módulo 1 (30min)',link:DSA},
+    {id:'s1cr2',data:'2026-05-14',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Módulo 1 continuação (30min)',link:DSA},
+    {id:'s1cr3',data:'2026-05-16',tipo:'carreira',done:false,titulo:'💼 Excel/BI — Fundação Bradesco (30min)',link:EV},
+    {id:'s1fim',data:'2026-05-17',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 1 — Dem. Contábeis, Gestão e Mat. Financeira',link:DC},
+    // Semana 2
+    {id:'s2dc1',data:'2026-05-18',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 2: Acessar conteúdo',link:DC},
+    {id:'s2gn1',data:'2026-05-19',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 2: Acessar conteúdo',link:GN},
+    {id:'s2mf1',data:'2026-05-20',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 2: Acessar conteúdo',link:MF},
+    {id:'s2cr1',data:'2026-05-19',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 2 (30min/dia)',link:DSA},
+    {id:'s2cr2',data:'2026-05-22',tipo:'carreira',done:false,titulo:'💼 Excel/BI — Fundação Bradesco (30min)',link:EV},
+    {id:'s2fim',data:'2026-05-24',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 2 — todas as disciplinas',link:DC},
+    // Semana 3
+    {id:'s3dc1',data:'2026-05-25',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 3: Acessar conteúdo',link:DC},
+    {id:'s3gn1',data:'2026-05-26',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 3: Acessar conteúdo',link:GN},
+    {id:'s3mf1',data:'2026-05-27',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 3: Acessar conteúdo',link:MF},
+    {id:'s3cr1',data:'2026-05-26',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 3 (30min/dia)',link:DSA},
+    {id:'s3fim',data:'2026-05-31',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 3 — todas as disciplinas',link:DC},
+    // Semana 4
+    {id:'s4dc1',data:'2026-06-01',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 4: Acessar conteúdo',link:DC},
+    {id:'s4gn1',data:'2026-06-02',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 4: Acessar conteúdo',link:GN},
+    {id:'s4mf1',data:'2026-06-03',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 4: Acessar conteúdo',link:MF},
+    {id:'s4cr1',data:'2026-06-02',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 4 (30min/dia)',link:DSA},
+    {id:'s4fim',data:'2026-06-07',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 4 — todas as disciplinas',link:DC},
+    // Semana 5
+    {id:'s5dc1',data:'2026-06-08',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 5: Acessar conteúdo',link:DC},
+    {id:'s5gn1',data:'2026-06-09',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 5: Acessar conteúdo',link:GN},
+    {id:'s5mf1',data:'2026-06-10',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 5: Acessar conteúdo',link:MF},
+    {id:'s5cr1',data:'2026-06-09',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 5 (30min/dia)',link:DSA},
+    {id:'s5fim',data:'2026-06-14',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 5 — todas as disciplinas',link:DC},
+    // Semana 6
+    {id:'s6dc1',data:'2026-06-15',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 6: Acessar conteúdo',link:DC},
+    {id:'s6gn1',data:'2026-06-16',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 6: Acessar conteúdo',link:GN},
+    {id:'s6mf1',data:'2026-06-17',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 6: Acessar conteúdo',link:MF},
+    {id:'s6cr1',data:'2026-06-16',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 6 (30min/dia)',link:DSA},
+    {id:'s6fim',data:'2026-06-21',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 6 — todas as disciplinas',link:DC},
+    // Semana 7
+    {id:'s7dc1',data:'2026-06-22',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 7: Acessar conteúdo',link:DC},
+    {id:'s7gn1',data:'2026-06-23',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 7: Acessar conteúdo',link:GN},
+    {id:'s7mf1',data:'2026-06-24',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 7: Acessar conteúdo',link:MF},
+    {id:'s7cr1',data:'2026-06-23',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 7 (30min/dia)',link:DSA},
+    {id:'s7fim',data:'2026-06-28',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 7 — todas as disciplinas',link:DC},
+    // Semana 8
+    {id:'s8dc1',data:'2026-06-29',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 8: Acessar conteúdo',link:DC},
+    {id:'s8gn1',data:'2026-06-30',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 8: Acessar conteúdo',link:GN},
+    {id:'s8mf1',data:'2026-07-01',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 8: Acessar conteúdo',link:MF},
+    {id:'s8cr1',data:'2026-06-30',tipo:'carreira',done:false,titulo:'💼 Power BI DSA — Semana 8 (30min/dia)',link:DSA},
+    {id:'s8fim',data:'2026-07-05',tipo:'review',done:false,titulo:'⚠️ PRAZO FINAL Semana 8 — todas as disciplinas',link:DC},
+    // Semana 9
+    {id:'s9dc1',data:'2026-07-06',tipo:'puc',done:false,titulo:'📗 Dem. Contábeis — Semana 9 FINAL: Acessar conteúdo',link:DC},
+    {id:'s9gn1',data:'2026-07-07',tipo:'puc',done:false,titulo:'📘 Gestão de Negócios — Semana 9 FINAL: Acessar conteúdo',link:GN},
+    {id:'s9mf1',data:'2026-07-08',tipo:'puc',done:false,titulo:'📙 Matemática Financeira — Semana 9 FINAL: Acessar conteúdo',link:MF},
+    {id:'s9fim',data:'2026-07-12',tipo:'review',done:false,titulo:'🏁 PRAZO FINAL Semana 9 — ENCERRAMENTO DO MÓDULO',link:DC},
+    {id:'enc1',data:'2026-08-13',tipo:'review',done:false,titulo:'🏁 ENCERRAMENTO FINAL — Módulo Outono 2026',link:DC},
+  ];
+  save();
+}
+
+// ══════════════════════════════════════════════════
+// VIEW MANAGER
+// ══════════════════════════════════════════════════
+let currentView='';
+let quizState={};
+let provaState={};
+let provaTimer=null;
+let aulaAtual=null;
+let mostrarTodasAtrasadas=false;
+
+const VIEWS=['welcome','dashboard-view','agenda-view','metas-view','chapter-view','provas-view','search-results','guia-view'];
+function setView(id){
+  VIEWS.forEach(v=>{const el=document.getElementById(v);if(el)el.style.display='none';});
+  const t=document.getElementById(id);
+  if(t)t.style.display=(id==='welcome')?'flex':'block';
+  currentView=id;
+}
+
+function showView(name){
+  document.getElementById('search-input').value='';
+  aulaAtual=null;
+  mostrarTodasAtrasadas=false;
+  if(name==='dashboard'){renderDashboard();setView('dashboard-view');document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Dashboard</span>';}
+  else if(name==='agenda'){renderAgenda();setView('agenda-view');document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Agenda</span>';}
+  else if(name==='metas'){renderMetas();setView('metas-view');document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Metas de Carreira</span>';}
+  else if(name==='guia'){renderGuia();setView('guia-view');document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Como usar o sistema</span>';}
+  renderNav();
+}
+
+// ══════════════════════════════════════════════════
+// GUIA
+// ══════════════════════════════════════════════════
+function renderGuia(){
+  const pv=document.getElementById('guia-view');
+  const steps=[
+    {num:'1',icon:'🌅',titulo:'Todo dia de manhã → Dashboard',desc:'Abra o sistema e clique em <strong>Dashboard</strong>. O painel vermelho mostra TUDO que está pendente e atrasado.'},
+    {num:'2',icon:'🔴',titulo:'Pendências em atraso → resolver primeiro',desc:'Tarefas não feitas <strong>ficam no sistema</strong> até você marcar como concluídas. Não somem. Resolva as mais antigas primeiro.'},
+    {num:'3',icon:'✅',titulo:'O que fazer hoje → Agenda',desc:'Clique em <strong>Agenda</strong>. Veja hoje e amanhã. Marque ✓ tudo que concluir.'},
+    {num:'4',icon:'🎓',titulo:'Estudar → Acessar o AVA',desc:'Na sidebar em <strong>Disciplinas AVA PUCPR</strong>, clique em <strong>↗ Acessar no AVA</strong> da matéria do dia.'},
+    {num:'5',icon:'📖',titulo:'Depois de estudar → Livro',desc:'Vá no <strong>Livro de Aulas</strong> na sidebar. Leia o resumo e faça o <strong>Quiz</strong>.'},
+    {num:'6',icon:'📚',titulo:'Cursos de carreira → 30min/dia mínimo',desc:'Em <strong>Cursos para Matricular</strong>, comece pelo Power BI da DSA. Marque como tarefa concluída no dashboard.'},
+    {num:'7',icon:'🎯',titulo:'Acompanhar plano → Metas',desc:'Clique em <strong>Metas de Carreira</strong> para ver o plano de 36 meses rumo à Volvo/Bosch/Mondelez.'},
+  ];
+  pv.innerHTML=`
+  <div class="dash-greeting"><h1>📖 Como usar o sistema</h1><p>Índice passo a passo</p></div>
+  <div style="background:#ffebee;border:2px solid var(--red);border-radius:12px;padding:16px 20px;margin-bottom:24px">
+    <div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:6px">⚠️ Regra mais importante do sistema</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.7">Tarefas não concluídas <strong>NÃO somem mais</strong>. Elas ficam acumuladas no painel de pendências do Dashboard até você marcar como feitas. Isso é intencional — para você nunca perder o controle do que ficou para trás.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px">
+    ${steps.map(s=>`<div style="background:#fff;border:1px solid var(--paper3);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:600;flex-shrink:0">${s.num}</div>
+      <div><div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px">${s.icon} ${s.titulo}</div><div style="font-size:13px;color:var(--ink2);line-height:1.65">${s.desc}</div></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════════
+function renderNav(){
+  const nav=document.getElementById('nav-list');
+  nav.innerHTML='';
+
+  function addLabel(t){const l=document.createElement('div');l.className='nav-label';l.textContent=t;nav.appendChild(l);}
+  function addItem(icon,label,action,badgeCount,badgeRed){
+    const d=document.createElement('div');
+    d.className='nav-item';
+    let badge='';
+    if(badgeCount>0)badge=`<span class="${badgeRed?'nav-badge-red':'nav-badge'}">${badgeCount}</span>`;
+    d.innerHTML=`<span class="nav-icon">${icon}</span><span class="nav-text">${label}</span>${badge}`;
+    d.onclick=()=>eval(action);
+    nav.appendChild(d);
+    return d;
+  }
+
+  const atrasadasCount=getAtrasadas().length;
+  const pendenteHojeCount=getPendentesHoje().length;
+
+  addLabel('Sistema');
+  addItem('📊','Dashboard',"showView('dashboard')",atrasadasCount>0?atrasadasCount:0,true);
+  addItem('📅','Agenda',"showView('agenda')",pendenteHojeCount>0?pendenteHojeCount:0,false);
+  addItem('📖','Como usar o sistema',"showView('guia')",0,false);
+  addItem('🎯','Metas de Carreira',"showView('metas')",0,false);
+  addItem('📊','Provas',"showProvas()",0,false);
+
+  addLabel('Disciplinas — AVA PUCPR');
+  const DISCIPLINAS_AVA=[
+    {nome:'📗 Demonstrações Contábeis',prog:'8%',link:'https://pucpr.grupoa.education/plataforma/course/4917624',encerra:'13/08/2026'},
+    {nome:'📘 Gestão de Negócios',prog:'0%',link:'https://pucpr.grupoa.education/plataforma/course/4917741',encerra:'13/08/2026'},
+    {nome:'📙 Matemática Financeira',prog:'0%',link:'https://pucpr.grupoa.education/plataforma/course/4917755',encerra:'13/08/2026'},
+  ];
+  DISCIPLINAS_AVA.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='sb-curso';
+    el.innerHTML=`<div class="sb-curso-nome">${d.nome}</div><div class="sb-curso-data">Progresso: ${d.prog} · Encerra ${d.encerra}</div><a class="sb-curso-link" href="${d.link}" target="_blank">↗ Acessar no AVA</a>`;
+    nav.appendChild(el);
+  });
+
+  addLabel('Cursos para Matricular');
+  const CURSOS_SB=[
+    {nome:'Power BI — Data Science Academy',data:'Iniciar agora',link:'https://www.datascienceacademy.com.br/course/microsoft-power-bi-para-data-science'},
+    {nome:'Excel/BI — Fundação Bradesco',data:'Iniciar agora',link:'https://www.ev.org.br'},
+    {nome:'Google Data Analytics — Coursera',data:'A partir de Nov/2026',link:'https://www.coursera.org/professional-certificates/google-data-analytics'},
+    {nome:'SQL — Mode Analytics',data:'A partir de Nov/2026',link:'https://mode.com/sql-tutorial'},
+    {nome:'Python para Dados — DSA',data:'A partir de Mar/2027',link:'https://www.datascienceacademy.com.br/course/python-fundamentos'},
+    {nome:'Business Intelligence — FGV',data:'A partir de Jun/2027',link:'https://educacao-executiva.fgv.br'},
+    {nome:'Prep. PL-300 — Microsoft Learn',data:'A partir de Mar/2028',link:'https://learn.microsoft.com/pt-br/training/courses/pl-300t00'},
+    {nome:'Exame PL-300 — Microsoft',data:'A partir de Jun/2028',link:'https://learn.microsoft.com/pt-br/certifications/power-bi-data-analyst-associate'},
+  ];
+  CURSOS_SB.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='sb-curso';
+    d.innerHTML=`<div class="sb-curso-nome">${c.nome}</div><div class="sb-curso-data">📅 ${c.data}</div><a class="sb-curso-link" href="${c.link}" target="_blank">↗ Acessar / Matricular</a>`;
+    nav.appendChild(d);
+  });
+
+  addLabel('Livro de Aulas');
+  [...DB.aulas].sort((a,b)=>a.num-b.num).forEach(aula=>{
+    const d=document.createElement('div');
+    d.className='nav-item'+(aulaAtual?.id===aula.id?' active':'');
+    d.innerHTML=`<span class="nav-icon" style="font-size:10px;color:var(--accent2);font-family:var(--mono)">C${aula.num}</span><span class="nav-text">${aula.titulo}</span>`;
+    d.onclick=()=>showChapter(aula.id);
+    nav.appendChild(d);
+  });
+
+  // footer
+  const total=DB.tarefas.filter(t=>t.data===today()).length;
+  const done=DB.tarefas.filter(t=>t.data===today()&&t.done).length;
+  const totalAtras=atrasadasCount;
+  document.getElementById('sb-footer').innerHTML=`Hoje: ${done}/${total} · Atrasadas: <span style="color:${totalAtras>0?'#ff6b6b':'#aaa'}">${totalAtras}</span>`;
+  document.getElementById('tb-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'});
+}
+
+// ══════════════════════════════════════════════════
+// DASHBOARD — COM PAINEL DE PENDÊNCIAS
+// ══════════════════════════════════════════════════
+function renderDashboard(){
+  const atrasadas=getAtrasadas();
+  const hojeT=getHoje();
+  const pendentesHoje=getPendentesHoje();
+  const doneTodayCount=hojeT.filter(t=>t.done).length;
+
+  const hr=new Date().getHours();
+  const saud=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';
+
+  const pv=document.getElementById('dashboard-view');
+
+  // ── PAINEL PENDÊNCIAS (sempre visível se houver)
+  let pendenciasHTML='';
+  const totalPend=atrasadas.length+pendentesHoje.length;
+
+  if(atrasadas.length>0){
+    const limitar=!mostrarTodasAtrasadas&&atrasadas.length>5;
+    const visiveis=limitar?atrasadas.slice(0,5):atrasadas;
+    pendenciasHTML=`
+    <div class="pendencias-banner">
+      <div class="pendencias-banner-titulo">⚠️ PENDÊNCIAS EM ATRASO — Faça agora</div>
+      <div class="pendencias-banner-count pulse">${atrasadas.length}</div>
+      <div class="pendencias-banner-sub">tarefa${atrasadas.length!==1?'s':''} não concluída${atrasadas.length!==1?'s':''} de dias anteriores</div>
+      <div class="pendencias-lista">
+        ${visiveis.map(t=>{
+          const dias=diasAtraso(t.data);
+          const tagMap={puc:'📗',carreira:'💼',review:'🔄',ingles:'🌐',project:'🚀'};
+          return `<div class="pendencia-item">
+            <div class="pendencia-check" onclick="toggleTask('${t.id}','dash')" title="Marcar como feito">✓</div>
+            <div class="pendencia-item-texto">${tagMap[t.tipo]||'📌'} ${t.titulo}${t.link?` <a href="${t.link}" target="_blank" style="color:#90caf9;font-size:10px">↗</a>`:''}</div>
+            <div class="pendencia-item-data">${dias}d atrás<br>${fmtDisplay(t.data)}</div>
+          </div>`;
+        }).join('')}
+        ${limitar?`<div class="pendencias-ver-mais" onclick="mostrarTodasAtrasadas=true;renderDashboard()">Ver todas as ${atrasadas.length} pendências →</div>`:''}
+      </div>
+    </div>`;
+  } else if(pendentesHoje.length===0){
+    pendenciasHTML=`<div style="background:#e8f5e9;border:1px solid var(--green);border-radius:14px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">🎉</span>
+      <div><div style="font-size:15px;font-weight:600;color:var(--green)">Tudo em dia!</div><div style="font-size:13px;color:var(--ink2)">Nenhuma pendência em atraso. Continue assim!</div></div>
+    </div>`;
+  }
+
+  // ── PRÓXIMA TAREFA DE HOJE
+  const proxima=pendentesHoje[0]||atrasadas[0];
+  let agoraHTML='';
+  if(proxima){
+    const linkAula=proxima.link||'https://pucpr.grupoa.education/plataforma/my-enrollments/courses';
+    const isAtras=proxima.data<today();
+    agoraHTML=`<div style="background:linear-gradient(135deg,var(--ink),#2d2926);border-radius:14px;padding:20px 24px;margin-bottom:20px;color:#fff">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);margin-bottom:8px">${isAtras?'⚠️ Em atraso — Fazer agora':'👉 Próxima tarefa de hoje'}</div>
+      <div style="font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:10px;line-height:1.35">${proxima.titulo}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:16px">${isAtras?`${diasAtraso(proxima.data)} dia(s) em atraso — previsto: ${fmtFull(proxima.data)}`:fmtFull(proxima.data)}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="${linkAula}" target="_blank" style="background:var(--accent);color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">↗ Ir à aula</a>
+        <button onclick="toggleTask('${proxima.id}','dash')" style="background:var(--green);color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer">✓ Marcar como feito</button>
+      </div>
+    </div>`;
+  }
+
+  // ── PROGRESSO
+  const pucDone=DB.tarefas.filter(t=>t.tipo==='puc'&&t.done).length;
+  const pucTotal=Math.max(DB.tarefas.filter(t=>t.tipo==='puc').length,1);
+  const carDone=DB.tarefas.filter(t=>t.tipo==='carreira'&&t.done).length;
+  const carTotal=Math.max(DB.tarefas.filter(t=>t.tipo==='carreira').length,1);
+  const totalDone=DB.tarefas.filter(t=>t.done).length;
+  const totalTasks=Math.max(DB.tarefas.length,1);
+
+  pv.innerHTML=`
+  <div class="dash-greeting">
+    <h1>${saud}, Jorge 👋</h1>
+    <p>${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})} · ${doneTodayCount}/${hojeT.length} tarefas de hoje · ${atrasadas.length} pendência${atrasadas.length!==1?'s':''} em atraso</p>
+  </div>
+
+  ${pendenciasHTML}
+  ${agoraHTML}
+
+  <div class="dash-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title">📋 Tarefas de hoje</span>
+        <span class="card-head-sub">${doneTodayCount}/${hojeT.length} concluídas</span>
+      </div>
+      <div class="card-body">
+        ${hojeT.length===0
+          ?'<p style="font-size:13px;color:var(--ink3);text-align:center;padding:10px 0">Nenhuma tarefa programada para hoje.</p>'
+          :hojeT.map(t=>taskHTML(t,'dash')).join('')}
+        <button onclick="openModal('tarefa')" style="width:100%;margin-top:10px;font-family:var(--sans);font-size:12px;color:var(--accent);background:none;border:1px dashed var(--accent);border-radius:8px;padding:7px;cursor:pointer">+ Adicionar tarefa</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-head-title">📈 Progresso geral</span></div>
+      <div class="card-body">
+        <div class="prog-item">
+          <div class="prog-label"><span>🎓 PUCPR</span><span class="prog-pct">${Math.round(pucDone/pucTotal*100)}%</span></div>
+          <div class="prog-track"><div class="prog-fill fill-blue" style="width:${Math.round(pucDone/pucTotal*100)}%"></div></div>
+        </div>
+        <div class="prog-item">
+          <div class="prog-label"><span>💼 Carreira (Power BI etc)</span><span class="prog-pct">${Math.round(carDone/carTotal*100)}%</span></div>
+          <div class="prog-track"><div class="prog-fill fill-green" style="width:${Math.round(carDone/carTotal*100)}%"></div></div>
+        </div>
+        <div class="prog-item">
+          <div class="prog-label"><span>📊 Total geral</span><span class="prog-pct">${Math.round(totalDone/totalTasks*100)}%</span></div>
+          <div class="prog-track"><div class="prog-fill fill-orange" style="width:${Math.round(totalDone/totalTasks*100)}%"></div></div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)">
+          <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:10px">Acesso rápido</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <a href="https://pucpr.grupoa.education/plataforma/course/4917624" target="_blank" style="font-size:13px;color:var(--blue);text-decoration:none;padding:7px 10px;background:var(--paper2);border-radius:7px">↗ Demonstrações Contábeis</a>
+            <a href="https://pucpr.grupoa.education/plataforma/course/4917741" target="_blank" style="font-size:13px;color:var(--blue);text-decoration:none;padding:7px 10px;background:var(--paper2);border-radius:7px">↗ Gestão de Negócios</a>
+            <a href="https://pucpr.grupoa.education/plataforma/course/4917755" target="_blank" style="font-size:13px;color:var(--blue);text-decoration:none;padding:7px 10px;background:var(--paper2);border-radius:7px">↗ Matemática Financeira</a>
+            <a href="https://www.datascienceacademy.com.br/cursosgratuitos" target="_blank" style="font-size:13px;color:var(--green);text-decoration:none;padding:7px 10px;background:#e8f5e9;border-radius:7px">↗ Power BI — DSA (carreira)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function taskHTML(t, ctx){
+  const tagMap={puc:'tag-puc',carreira:'tag-carreira',ingles:'tag-ingles',review:'tag-review',project:'tag-project'};
+  const tagLabel={puc:'PUC',carreira:'Carreira',ingles:'Inglês',review:'Revisão',project:'Projeto'};
+  const isLate=t.data<today()&&!t.done;
+  return `<div class="task-item ${isLate?'atrasado-item':''}">
+    <div class="task-cb ${t.done?'checked':''}" onclick="toggleTask('${t.id}','${ctx}')"></div>
+    <div class="task-content">
+      <div class="task-title ${t.done?'done':''}">${t.titulo}</div>
+      <div class="task-meta">
+        ${t.tipo?`<span class="task-tag ${tagMap[t.tipo]||'tag-puc'}">${tagLabel[t.tipo]||t.tipo}</span>`:''}
+        ${isLate?`<span class="task-late-badge">⚠ ${diasAtraso(t.data)}d em atraso</span>`:''}
+        ${t.link?`<a href="${t.link}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;font-weight:500">↗ Abrir</a>`:''}
+      </div>
+    </div>
+    <div onclick="removeTask('${t.id}','${ctx}')" title="Remover" style="color:var(--ink3);cursor:pointer;font-size:12px;padding:2px 6px;border-radius:4px;opacity:.5" onmouseenter="this.style.opacity=1;this.style.color='var(--red)'" onmouseleave="this.style.opacity=.5;this.style.color='var(--ink3)'">✕</div>
+  </div>`;
+}
+
+function toggleTask(id, ctx){
+  const t=DB.tarefas.find(t=>t.id===id);
+  if(!t)return;
+  t.done=!t.done;
+  save();
+  if(ctx==='dash')renderDashboard();
+  else if(ctx==='agenda')renderAgenda();
+  renderNav();
+}
+
+function removeTask(id, ctx){
+  if(!confirm('Remover esta tarefa?'))return;
+  DB.tarefas=DB.tarefas.filter(t=>t.id!==id);
+  save();
+  if(ctx==='dash')renderDashboard();
+  else if(ctx==='agenda')renderAgenda();
+  renderNav();
+}
+
+// ══════════════════════════════════════════════════
+// AGENDA — COM SEÇÃO DE ATRASADAS
+// ══════════════════════════════════════════════════
+let agendaWeekOffset=0;
+
+function renderAgenda(){
+  const pv=document.getElementById('agenda-view');
+  const atrasadas=getAtrasadas();
+  const hojeT=getHoje();
+  const amanhaT=getAmanha();
+
+  const weekStart=new Date();
+  weekStart.setDate(weekStart.getDate()-weekStart.getDay()+agendaWeekOffset*7);
+  let days=[];
+  for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);days.push(d);}
+  const monthLabel=weekStart.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+
+  let weekHtml='<div class="week-grid">';
+  days.forEach(d=>{
+    const ds=fmtDate(d);
+    const isToday=ds===today();
+    const isPast=ds<today();
+    const dayTasks=DB.tarefas.filter(t=>t.data===ds);
+    const names=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const typeClass={puc:'dt-puc',carreira:'dt-carreira',ingles:'dt-ingles',review:'dt-review',project:'dt-project'};
+    weekHtml+=`<div class="day-col ${isToday?'today':''} ${isPast&&!isToday?'past':''}">
+      <div class="day-head"><span class="day-name">${names[d.getDay()]}</span><span class="day-num">${d.getDate()}</span></div>
+      <div class="day-tasks">
+        ${dayTasks.map(t=>`<div class="dt ${typeClass[t.tipo]||'dt-puc'} ${t.done?'done-task':''}" onclick="toggleTaskByDate('${t.id}')" title="${t.titulo}">${t.titulo.length>28?t.titulo.slice(0,26)+'…':t.titulo}</div>`).join('')}
+        <div class="day-add" onclick="openModalTarefaData('${ds}')">+ tarefa</div>
+      </div>
+    </div>`;
+  });
+  weekHtml+='</div>';
+
+  // seção atrasadas na agenda
+  let atrasadasHTML='';
+  if(atrasadas.length>0){
+    atrasadasHTML=`
+    <div class="atrasadas-section" style="margin-bottom:20px">
+      <div class="atrasadas-header">
+        <div class="atrasadas-header-title">⚠️ Pendências em Atraso — Não concluídas de dias anteriores <span class="atrasadas-header-count">${atrasadas.length}</span></div>
+      </div>
+      <div class="atrasadas-body">
+        ${atrasadas.map(t=>taskHTML(t,'agenda')).join('')}
+      </div>
+    </div>`;
+  }
+
+  pv.innerHTML=`
+  <div class="agenda-nav">
+    <button class="btn btn-ghost btn-sm" onclick="agendaWeekOffset--;renderAgenda()">← Semana anterior</button>
+    <div class="agenda-title">📅 ${monthLabel.charAt(0).toUpperCase()+monthLabel.slice(1)}</div>
+    <button class="btn btn-ghost btn-sm" onclick="agendaWeekOffset++;renderAgenda()">Próxima semana →</button>
+    <button class="btn btn-primary btn-sm" onclick="openModalTarefaData('${today()}')">+ Tarefa</button>
+  </div>
+  ${weekHtml}
+  ${atrasadasHTML}
+  <div class="dash-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-head-title">📌 Hoje — ${fmtFull(today())}</span><span class="card-head-sub">${hojeT.filter(t=>t.done).length}/${hojeT.length} concluídas</span></div>
+      <div class="card-body">
+        ${hojeT.length===0
+          ?`<p style="font-size:13px;color:var(--ink3);text-align:center;padding:12px 0">Nenhuma tarefa hoje.<br><a href="#" onclick="openModalTarefaData('${today()}')" style="color:var(--accent)">+ Adicionar</a></p>`
+          :hojeT.map(t=>taskHTML(t,'agenda')).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-head-title">⏭ Amanhã — ${fmtFull(todayPlus(1))}</span></div>
+      <div class="card-body">
+        ${amanhaT.length===0
+          ?`<p style="font-size:13px;color:var(--ink3)">Sem tarefas amanhã ainda.<br><a href="#" onclick="openModalTarefaData('${todayPlus(1)}')" style="color:var(--accent)">+ Adicionar</a></p>`
+          :amanhaT.map(t=>taskHTML(t,'agenda')).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleTaskByDate(id){
+  const t=DB.tarefas.find(t=>t.id===id);
+  if(!t)return;
+  t.done=!t.done;
+  save();renderAgenda();renderNav();
+}
+
+function openModalTarefaData(data){openModal('tarefa',data);}
+
+// ══════════════════════════════════════════════════
+// METAS
+// ══════════════════════════════════════════════════
+function renderMetas(){
+  if(!DB.metas||DB.metas.length===0)DB.metas=[...METAS_DEFAULT];
+  const pv=document.getElementById('metas-view');
+  const fases=[1,2,3];
+  const faseLabel={1:'Fase 1 — Meses 1 a 6 (Maio–Out 2026)',2:'Fase 2 — Meses 7 a 24 (Nov 2026–Out 2027)',3:'Fase 3 — Meses 25 a 36 (Nov 2027–Mai 2029)'};
+  const faseBadge={1:'pb-1',2:'pb-2',3:'pb-3'};
+  const fasetxt={1:'Base',2:'Construção',3:'Multinacional'};
+  const total=DB.metas.length;
+  const done=DB.metas.filter(m=>m.done).length;
+  const pct=total?Math.round(done/total*100):0;
+  let html=`
+  <div class="dash-greeting"><h1>🎯 Metas de Carreira</h1><p>Volvo · Bosch · Mondelez — Financial Data Analyst | ${done}/${total} metas concluídas (${pct}%)</p></div>
+  <div style="background:#fff;border:1px solid var(--paper3);border-radius:12px;padding:16px 20px;margin-bottom:22px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin-bottom:8px"><span>Progresso geral do plano de 36 meses</span><span style="font-family:var(--mono)">${pct}%</span></div>
+    <div class="prog-track" style="height:10px"><div class="prog-fill fill-green" style="width:${pct}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:6px"><span>Início: Mai/2026</span><span>Meta final: Mai/2029</span></div>
+  </div>`;
+  fases.forEach(f=>{
+    const mf=DB.metas.filter(m=>m.fase===f);
+    const mfDone=mf.filter(m=>m.done).length;
+    html+=`<div class="meta-phase">
+      <div class="meta-phase-title"><span class="phase-badge ${faseBadge[f]}">${fasetxt[f]}</span>${faseLabel[f]}<span style="font-family:var(--mono);font-size:12px;color:var(--ink3);margin-left:auto">${mfDone}/${mf.length}</span></div>
+      <div class="card"><div class="card-body" style="padding:10px 16px">
+        ${mf.map(m=>{
+          const isUrgent=m.prazo&&m.prazo<todayPlus(30)&&!m.done;
+          return `<div class="meta-item">
+            <div class="meta-cb ${m.done?'checked':''}" onclick="toggleMeta('${m.id}')"></div>
+            <div style="flex:1">
+              <div class="meta-text ${m.done?'done':''}">${m.texto}${m.link?` <a href="${m.link}" target="_blank" style="color:var(--blue);font-size:11px">↗ link</a>`:''}</div>
+              <div class="meta-deadline ${isUrgent?'urgent':''}">Prazo: ${fmtDisplay(m.prazo)}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div></div>
+    </div>`;
+  });
+  html+=`<div style="text-align:right;margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="openModal('meta')">+ Nova Meta</button></div>`;
+  pv.innerHTML=html;
+}
+
+function toggleMeta(id){
+  const m=DB.metas.find(m=>m.id===id);
+  if(!m)return;m.done=!m.done;save();renderMetas();renderNav();
+}
+
+// ══════════════════════════════════════════════════
+// LIVRO — CAPÍTULOS
+// ══════════════════════════════════════════════════
+function showChapter(id){
+  const aula=DB.aulas.find(a=>a.id===id);
+  if(!aula)return;
+  aulaAtual=aula;quizState[id]=quizState[id]||{};
+  document.getElementById('search-input').value='';
+  setView('chapter-view');
+  document.getElementById('breadcrumb').innerHTML=`Livro &rsaquo; <span>Cap.${aula.num} — ${aula.titulo}</span>`;
+  renderNav();
+  const topics=(aula.topicos||[]).map(t=>`<span class="topic-pill">${t}</span>`).join('');
+  let html=`<div class="chapter-header">
+    <div class="chapter-meta"><span class="chapter-num">Cap.${String(aula.num).padStart(2,'0')}</span><span class="chapter-tag">${aula.tipo}</span></div>
+    <h1 class="chapter-title">${aula.titulo}</h1>
+    ${aula.subtitulo?`<p class="chapter-sub">${aula.subtitulo}</p>`:''}
+    ${topics?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px">${topics}</div>`:''}
+  </div>`;
+  if(aula.resumo)html+=sec('📋','i-res','Resumo Estratégico',renderResumo(aula.resumo));
+  if(aula.explicacao)html+=sec('📖','i-exp','Explicação Aprofundada',renderExp(aula.explicacao));
+  if(aula.anotacoes)html+=sec('✏️','i-ann','Anotações do Aluno',renderAnn(aula.anotacoes));
+  if(aula.quiz&&aula.quiz.length)html+=sec('🎯','i-quiz','Quiz — 10 Questões',renderQuiz(aula));
+  if(aula.completo)html+=sec('📄','i-full','Conteúdo Completo',renderFull(aula.completo));
+  document.getElementById('chapter-view').innerHTML=html;window.scrollTo(0,0);
+}
+
+function sec(icon,cls,title,body){return `<div class="section"><div class="sec-head"><div class="sec-icon ${cls}">${icon}</div><h2 class="sec-title">${title}</h2><div class="sec-rule"></div></div>${body}</div><div class="divider-orn">· · ·</div>`;}
+function renderResumo(t){const ls=t.split('\n').filter(l=>l.trim());let h='<div class="prose">';ls.forEach(l=>{const s=l.trim();if(/^\d+\./.test(s))h+=`<p><strong>${s.match(/^\d+\.\s*/)[0]}</strong>${s.replace(/^\d+\.\s*/,'')}</p>`;else if(s.startsWith('•')||s.startsWith('-'))h+=`<p style="padding-left:12px">${s}</p>`;else h+=`<p>${s}</p>`;});return h+'</div>';}
+function renderExp(t){const ps=t.split('\n\n').filter(p=>p.trim());let h='<div class="prose">';ps.forEach(p=>{const s=p.trim();if(/^\d+\./.test(s)){const[f,...r]=s.split('\n');h+=`<p><strong>${f}</strong></p>`;if(r.length)h+=`<p>${r.join('<br>')}</p>`;}else h+=`<p>${s.replace(/\n/g,'<br>')}</p>`;});return h+'</div>';}
+function renderAnn(t){const ls=t.split('\n').filter(l=>l.trim());let h='';ls.forEach(l=>{const s=l.trim();if(s.startsWith('⚠️'))h+=`<div class="alert-box"><strong>Atenção:</strong> ${s.replace('⚠️','').trim()}</div>`;else if(s.startsWith('✔'))h+=`<div class="tip-box">${s}</div>`;else if(s.startsWith('•')||s.startsWith('-'))h+=`<div class="info-box">${s}</div>`;else if(s===s.toUpperCase()&&s.length>4)h+=`<p style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin:12px 0 4px">${s}</p>`;else h+=`<p class="prose" style="font-size:13px">${s}</p>`;});return h;}
+function renderFull(t){const ps=t.split('\n\n').filter(p=>p.trim());let h='<div class="prose">';ps.forEach(p=>{const s=p.trim();if(s===s.toUpperCase()&&s.length>4&&s.length<80)h+=`<p style="font-weight:500;color:var(--ink);margin-top:1.2em">${s}</p>`;else h+=`<p>${s.replace(/\n/g,'<br>')}</p>`;});return h+'</div>';}
+
+// ══════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════
+function renderQuiz(aula){
+  const qs=aula.quiz;const qid=aula.id;
+  const done=DB.historico.find(h=>h.id===qid&&h.tipo==='quiz');
+  let html=`<div class="quiz-wrap" id="quiz-${qid}">
+    <div class="quiz-top"><div class="quiz-top-title">Quiz — ${qs.length} Questões</div><div class="quiz-top-sub">Responda e veja gabarito comentado</div><div class="qprog-bar"><div class="qprog-fill" id="qp-${qid}" style="width:0%"></div></div></div>
+    <div id="qbody-${qid}">`;
+  qs.forEach((q,qi)=>{
+    html+=`<div id="qq-${qid}-${qi}" style="${qi>0?'display:none':''}">
+      <div class="quiz-body"><div class="q-num">Questão ${qi+1} de ${qs.length}</div><div class="q-text">${q.q}</div><div class="q-opts">`;
+    q.opts.forEach((o,oi)=>{html+=`<div class="q-opt" id="qo-${qid}-${qi}-${oi}" onclick="selQuiz('${qid}',${qi},${oi})"><span class="q-opt-letter">${['a','b','c','d'][oi]})</span><span class="q-opt-text">${o}</span></div>`;});
+    html+=`</div><div class="q-fb" id="qfb-${qid}-${qi}"></div></div>
+      <div class="quiz-foot">${qi>0?`<button class="qnav prev" onclick="qNav('${qid}',${qi},-1)">← Anterior</button>`:'<span></span>'}<span class="q-counter">${qi+1}/${qs.length}</span><button class="qnav next" id="qnxt-${qid}-${qi}" onclick="qNav('${qid}',${qi},1)" disabled>${qi<qs.length-1?'Próxima →':'Ver Resultado'}</button></div>
+    </div>`;
+  });
+  html+=`</div><div id="qres-${qid}" style="display:none"></div></div>`;
+  if(done)html+=`<div class="info-box" style="margin-top:10px;font-size:12px">📊 Último resultado: <strong>${done.acertos}/${qs.length}</strong> (${done.pct}%) em ${done.data}</div>`;
+  return html;
+}
+
+function selQuiz(qid,qi,oi){
+  if(quizState[qid]===undefined)quizState[qid]={};
+  if(quizState[qid][qi]!==undefined)return;
+  const aula=DB.aulas.find(a=>a.id===qid);const q=aula.quiz[qi];
+  quizState[qid][qi]=oi;
+  q.opts.forEach((_,i)=>{const el=document.getElementById(`qo-${qid}-${qi}-${i}`);el.classList.add('disabled');if(i===q.correct)el.classList.add('correct');});
+  const ch=document.getElementById(`qo-${qid}-${qi}-${oi}`);
+  if(oi===q.correct)ch.classList.add('correct');else ch.classList.add('wrong');
+  const fb=document.getElementById(`qfb-${qid}-${qi}`);
+  fb.className='q-fb show '+(oi===q.correct?'correct':'wrong');
+  fb.innerHTML=(oi===q.correct?'<strong>✓ Correto!</strong> ':'<strong>✗ Incorreto.</strong> ')+(q.exp||'');
+  document.getElementById(`qnxt-${qid}-${qi}`).disabled=false;
+  document.getElementById(`qp-${qid}`).style.width=(Object.keys(quizState[qid]).length/aula.quiz.length*100)+'%';
+}
+
+function qNav(qid,cur,dir){
+  const aula=DB.aulas.find(a=>a.id===qid);const total=aula.quiz.length;const next=cur+dir;
+  if(next<0)return;
+  if(next>=total){showQuizResult(qid);return;}
+  document.getElementById(`qq-${qid}-${cur}`).style.display='none';
+  document.getElementById(`qq-${qid}-${next}`).style.display='block';
+}
+
+function showQuizResult(qid){
+  const aula=DB.aulas.find(a=>a.id===qid);const qs=aula.quiz;
+  const st=quizState[qid]||{};const acertos=qs.filter((q,i)=>st[i]===q.correct).length;
+  const pct=Math.round(acertos/qs.length*100);
+  const cls=pct>=80?'great':pct>=60?'good':'low';
+  const lbl=pct>=80?'🏆 Excelente!':pct>=60?'👍 Bom resultado':'📚 Continue estudando';
+  document.getElementById(`qbody-${qid}`).style.display='none';
+  const res=document.getElementById(`qres-${qid}`);res.style.display='block';
+  const grid=qs.map((q,i)=>`<div class="qr-item ${st[i]===q.correct?'qr-ok':'qr-fail'}">${st[i]===q.correct?'✓':'✗'} Q${i+1}</div>`).join('');
+  res.innerHTML=`<div class="quiz-result"><div class="qr-score ${cls}">${pct}%</div><div class="qr-label">${lbl}</div><div class="qr-sub">${acertos} de ${qs.length} corretas</div><div class="qr-grid">${grid}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn btn-ghost" onclick="quizState['${qid}']={};showChapter('${qid}')">↺ Refazer</button><button class="btn btn-primary" onclick="gabarito('${qid}')">Ver Gabarito</button></div></div>`;
+  DB.historico.push({id:qid,tipo:'quiz',titulo:aula.titulo,acertos,total:qs.length,pct,data:new Date().toLocaleDateString('pt-BR')});save();
+}
+
+function gabarito(qid){
+  const aula=DB.aulas.find(a=>a.id===qid);const st=quizState[qid]||{};
+  const box=document.getElementById(`quiz-${qid}`);
+  let h='<div style="padding:20px">';
+  h+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-family:var(--serif);font-size:16px;font-weight:600">Gabarito Comentado</div><button class="btn btn-ghost btn-sm" onclick="quizState['${qid}']={};showChapter('${qid}')">↺ Refazer</button></div>`;
+  aula.quiz.forEach((q,i)=>{
+    const ok=st[i]===q.correct;
+    h+=`<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)"><div style="font-size:10px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px">Q${i+1} ${ok?'<span style="color:var(--green)">✓</span>':'<span style="color:var(--red)">✗</span>'}</div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px">${q.q}</div><div style="font-size:12px;color:var(--green);margin-bottom:5px">✓ ${['a','b','c','d'][q.correct]}) ${q.opts[q.correct]}</div>${q.exp?`<div style="font-size:12px;color:var(--ink2);background:var(--paper2);padding:8px 12px;border-radius:7px">${q.exp}</div>`:''}</div>`;
+  });
+  h+='</div>';box.innerHTML=h;
+}
+
+// ══════════════════════════════════════════════════
+// PROVAS
+// ══════════════════════════════════════════════════
+function showProvas(){
+  aulaAtual=null;setView('provas-view');
+  document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Provas</span>';
+  renderNav();
+  const pv=document.getElementById('provas-view');
+  pv.innerHTML=`<div class="prova-tabs">
+    <button class="prova-tab active" onclick="switchTab(this,'pt-s')">📅 Semanal</button>
+    <button class="prova-tab" onclick="switchTab(this,'pt-m')">📆 Mensal</button>
+    <button class="prova-tab" onclick="switchTab(this,'pt-t')">📋 Trimestral</button>
+    <button class="prova-tab" onclick="switchTab(this,'pt-h')">📊 Histórico</button>
+  </div>
+  <div id="pt-s">${renderProvaTab('semanal')}</div>
+  <div id="pt-m" style="display:none">${renderProvaTab('mensal')}</div>
+  <div id="pt-t" style="display:none">${renderProvaTab('trimestral')}</div>
+  <div id="pt-h" style="display:none">${renderHistorico()}</div>`;
+}
+
+function switchTab(btn,id){
+  document.querySelectorAll('.prova-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pt-s','pt-m','pt-t','pt-h'].forEach(i=>{document.getElementById(i).style.display=i===id?'block':'none';});
+}
+
+function renderProvaTab(tipo){
+  const key={semanal:'semana',mensal:'mes',trimestral:'trimestre'}[tipo];
+  const label={semanal:'Prova Semanal',mensal:'Prova Mensal',trimestral:'Prova Trimestral'}[tipo];
+  const tempo={semanal:30,mensal:60,trimestral:90}[tipo];
+  const badgeCls={semanal:'ps',mensal:'pm',trimestral:'pt'}[tipo];
+  const grupos={};
+  DB.aulas.forEach(a=>{const k=a[key]||1;if(!grupos[k])grupos[k]=[];grupos[k].push(a);});
+  if(!Object.keys(grupos).length)return'<p style="font-size:13px;color:var(--ink3);padding:20px">Nenhuma aula cadastrada ainda.</p>';
+  let html='';
+  Object.keys(grupos).sort((a,b)=>a-b).forEach(k=>{
+    const ag=grupos[k];const allQ=ag.flatMap(a=>(a.quiz||[]).map(q=>({...q,_aula:a.titulo})));
+    if(!allQ.length){html+=`<div class="info-box" style="margin-bottom:12px">${label} ${k}: cadastre questões nas aulas.</div>`;return;}
+    const shuffled=[...allQ].sort(()=>Math.random()-.5).slice(0,Math.min(20,allQ.length));
+    const pid=`${tipo}-${k}`;
+    html+=`<div class="prova-card"><div class="pc-head"><div><div class="pc-title">${label} — Período ${k}</div><div class="pc-sub">${ag.length} aula${ag.length!==1?'s':''}: ${ag.map(a=>a.titulo).join(', ')}</div></div><span class="pc-badge ${badgeCls}">${shuffled.length} questões · ${tempo}min</span></div><div id="pc-${pid}"><div class="pc-body"><div class="info-box" style="margin-bottom:14px"><strong>${shuffled.length} questões</strong> · Tempo: <strong>${tempo} minutos</strong></div><button class="btn btn-primary" style="width:100%" onclick="iniciarProva('${pid}',${JSON.stringify(shuffled).replace(/'/g,"\\'")})">▶ Iniciar Prova</button></div></div></div>`;
+  });
+  return html;
+}
+
+function iniciarProva(pid,qs){
+  provaState[pid]={qs,resp:{},inicio:new Date()};
+  const tempo=pid.startsWith('semanal')?30:pid.startsWith('mensal')?60:90;
+  renderProvaForm(pid,qs,tempo);startTimer(pid,tempo*60);
+}
+
+function renderProvaForm(pid,qs,min){
+  const c=document.getElementById(`pc-${pid}`);
+  let h=`<div style="position:sticky;top:50px;background:var(--paper);z-index:10;border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:500">⏱ Tempo restante</span><span class="ptimer" id="pt-${pid}">${String(min).padStart(2,'0')}:00</span><button class="btn btn-primary btn-sm" onclick="finalizarProva('${pid}')">Entregar</button></div><div class="pc-body">`;
+  qs.forEach((q,i)=>{
+    h+=`<div class="pq"><div class="pq-num">Questão ${i+1}/${qs.length}${q._aula?` · <span style="color:var(--ink3)">${q._aula}</span>`:''}</div><div class="pq-text">${q.q}</div>`;
+    if(q.correct!==undefined){
+      h+=`<div class="pq-opts">`;
+      q.opts.forEach((o,oi)=>{h+=`<div class="pq-opt" id="po-${pid}-${i}-${oi}" onclick="selProva('${pid}',${i},${oi})"><span class="pq-letter">${['a','b','c','d'][oi]})</span><span class="pq-text2">${o}</span></div>`;});
+      h+=`</div>`;
+    }else{
+      h+=`<textarea class="disc-area" id="pd-${pid}-${i}" oninput="provaState['${pid}'].resp[${i}]=this.value" placeholder="Sua resposta..."></textarea>`;
+    }
+    h+=`</div>`;
+  });
+  h+=`</div>`;c.innerHTML=h;
+}
+
+function selProva(pid,qi,oi){
+  const qs=provaState[pid].qs[qi];
+  qs.opts.forEach((_,i)=>document.getElementById(`po-${pid}-${qi}-${i}`)?.classList.remove('selected'));
+  document.getElementById(`po-${pid}-${qi}-${oi}`)?.classList.add('selected');
+  provaState[pid].resp[qi]=oi;
+}
+
+function startTimer(pid,sec){
+  let rem=sec;if(provaTimer)clearInterval(provaTimer);
+  provaTimer=setInterval(()=>{rem--;const el=document.getElementById(`pt-${pid}`);if(!el){clearInterval(provaTimer);return;}const m=Math.floor(rem/60),s=rem%60;el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(rem<=300)el.classList.add('urgent');if(rem<=0){clearInterval(provaTimer);finalizarProva(pid);}},1000);
+}
+
+function finalizarProva(pid){
+  if(provaTimer){clearInterval(provaTimer);provaTimer=null;}
+  const ps=provaState[pid];if(!ps)return;
+  const qs=ps.qs;const r=ps.resp;let ac=0,obj=0;
+  qs.forEach((q,i)=>{if(q.correct!==undefined){obj++;if(r[i]===q.correct)ac++;}});
+  const pct=obj?Math.round(ac/obj*100):null;
+  const cls=!pct?'good':pct>=70?'great':pct>=50?'good':'low';
+  const lbl=!pct?'Entregue':pct>=70?'🏆 Aprovado!':pct>=50?'👍 Regular':'📚 Precisa revisar';
+  const tipo=pid.startsWith('semanal')?'semanal':pid.startsWith('mensal')?'mensal':'trimestral';
+  let gab='<div style="background:var(--paper2);border-radius:9px;padding:14px 16px;margin:16px 0">';
+  qs.forEach((q,i)=>{
+    if(q.correct===undefined)gab+=`<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--line)">Q${i+1}. Discursiva</div>`;
+    else{const ok=r[i]===q.correct;gab+=`<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between"><span>Q${i+1}. ${q.q.slice(0,40)}…</span><span style="color:${ok?'var(--green)':'var(--red)'}">${ok?'✓':['a','b','c','d'][q.correct]+') correto'}</span></div>`;}
+  });
+  gab+='</div>';
+  const c=document.getElementById(`pc-${pid}`);
+  c.innerHTML=`<div style="padding:28px;text-align:center"><div class="qr-score ${cls}">${pct!==null?pct+'%':'Entregue'}</div><div class="qr-label">${lbl}</div>${obj>0?`<p style="font-size:13px;color:var(--ink3);margin-bottom:16px">${ac} de ${obj} objetivas corretas</p>`:''}${gab}<button class="btn btn-ghost" onclick="showProvas()">← Voltar</button></div>`;
+  DB.historico.push({id:pid,tipo,acertos:ac,total:obj,pct,data:new Date().toLocaleDateString('pt-BR'),titulo:`Prova ${tipo.charAt(0).toUpperCase()+tipo.slice(1)} — Per.${pid.split('-').pop()}`});
+  save();renderNav();
+}
+
+function renderHistorico(){
+  if(!DB.historico.length)return'<div style="font-size:13px;color:var(--ink3);padding:20px;text-align:center">Nenhuma avaliação ainda.</div>';
+  const s=[...DB.historico].reverse();
+  return`<table class="hist-table"><thead><tr><th>Data</th><th>Avaliação</th><th>Tipo</th><th>Acertos</th><th>Nota</th></tr></thead><tbody>${s.map(h=>{const cls=h.pct>=80?'hs-great':h.pct>=60?'hs-good':'hs-low';return`<tr><td>${h.data}</td><td style="font-weight:500;color:var(--ink)">${h.titulo||h.id}</td><td><span class="pc-badge ${h.tipo==='quiz'?'ps':h.tipo==='mensal'?'pm':'pt'}">${h.tipo}</span></td><td>${h.acertos||0}/${h.total||10}</td><td class="${cls}">${h.pct||0}%</td></tr>`;}).join('')}</tbody></table><div style="text-align:right;margin-top:14px"><button class="btn btn-ghost btn-sm" onclick="if(confirm('Apagar histórico?')){DB.historico=[];save();showProvas();}">🗑 Limpar</button></div>`;
+}
+
+// ══════════════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════════════
+document.getElementById('search-input').addEventListener('input',function(){
+  const q=this.value.trim();
+  if(q.length<2){clearSearch();return;}
+  doSearch(q);
+});
+function doSearch(q){
+  const ql=q.toLowerCase();
+  const hits=[];
+  DB.aulas.forEach(a=>{
+    const txt=[a.titulo,a.subtitulo,a.resumo,a.explicacao,a.anotacoes,a.completo].filter(Boolean).join(' ');
+    if(txt.toLowerCase().includes(ql))hits.push({aula:a,snip:getSnip(txt,q)});
+  });
+  setView('search-results');
+  const sr=document.getElementById('search-results');
+  const hl=t=>t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark>${m}</mark>`);
+  if(!hits.length){sr.innerHTML=`<div style="font-size:13px;color:var(--ink3);padding:24px 0;text-align:center">Sem resultados para "<strong>${q}</strong>"</div>`;return;}
+  sr.innerHTML=`<div style="font-size:12px;color:var(--ink3);margin-bottom:12px">${hits.length} resultado${hits.length!==1?'s':''} para "<strong style="color:var(--ink)">${q}</strong>"</div>`+
+    hits.map(({aula:a,snip})=>`<div class="sh" onclick="showChapter('${a.id}');clearSearch()"><div class="sh-ch">Cap.${a.num} · ${a.tipo}</div><div class="sh-title">${hl(a.titulo)}</div><div class="sh-snip">${hl(snip)}</div></div>`).join('');
+}
+function getSnip(t,q){const i=t.toLowerCase().indexOf(q.toLowerCase());if(i<0)return t.slice(0,120)+'...';const s=Math.max(0,i-50),e=Math.min(t.length,i+q.length+90);return(s>0?'…':'')+t.slice(s,e)+(e<t.length?'…':'');}
+function clearSearch(){document.getElementById('search-input').value='';if(aulaAtual)showChapter(aulaAtual.id);else showView('dashboard');}
+
+// ══════════════════════════════════════════════════
+// MODAIS
+// ══════════════════════════════════════════════════
+function openModal(tipo, data){
+  document.getElementById('modal-ov').classList.add('open');
+  if(tipo==='aula'){
+    document.getElementById('modal-title').textContent='Nova Aula';
+    document.getElementById('modal-sub').textContent='Preencha os campos. * obrigatórios.';
+    const next=DB.aulas.length?Math.max(...DB.aulas.map(a=>a.num))+1:1;
+    document.getElementById('modal-content').innerHTML=`
+      <div class="fr"><div class="fg"><label>Nº *</label><input id="f-num" type="number" value="${next}"></div><div class="fg"><label>Disciplina</label><select id="f-tipo"><option>Integração / Orientações</option><option>Demonstrações Contábeis</option><option>Gestão de Negócios</option><option>Matemática Financeira</option><option>Contabilidade Geral</option><option>Planejamento Tributário</option><option>Auditoria</option><option>Outro</option></select></div></div>
+      <div class="fg"><label>Título *</label><input id="f-titulo" placeholder="Ex: Balanço Patrimonial"></div>
+      <div class="fg"><label>Subtítulo / Professor</label><input id="f-sub" placeholder="Ex: Prof. Silva · Semana 2"></div>
+      <div class="fg"><label>Tópicos (vírgula)</label><input id="f-topicos" placeholder="Ex: Ativo, Passivo, PL"></div>
+      <div class="modal-sec">📋 Conteúdo</div>
+      <div class="fg"><label>Resumo *</label><textarea id="f-resumo" placeholder="Pontos mais importantes..."></textarea></div>
+      <div class="fg"><label>Explicação Aprofundada</label><textarea id="f-explicacao"></textarea></div>
+      <div class="fg"><label>Anotações</label><textarea id="f-anotacoes" placeholder="⚠️ Alerta: ... / ✔ Dica: ..."></textarea></div>
+      <div class="fg"><label>Conteúdo Completo</label><textarea id="f-completo"></textarea></div>
+      <div class="modal-sec">🎯 Quiz</div>
+      <div class="tip-box" style="margin-bottom:12px;font-size:12px">Formato:<br>Pergunta 1: Texto?<br>a) Opção A<br>b) *Gabarito (marque com *)<br>c) Opção C<br>Explicação: Comentário...</div>
+      <div class="fg"><label>Quiz</label><textarea id="f-quiz" style="min-height:160px" placeholder="Pergunta 1: ..."></textarea></div>`;
+    document.getElementById('modal-acts').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarAula()">Salvar</button>`;
+  }else if(tipo==='tarefa'){
+    document.getElementById('modal-title').textContent='Nova Tarefa';
+    document.getElementById('modal-sub').textContent='Adicione uma tarefa à agenda';
+    document.getElementById('modal-content').innerHTML=`
+      <div class="fg"><label>Título *</label><input id="ft-titulo" placeholder="Ex: Estudar Balanço Patrimonial"></div>
+      <div class="fr">
+        <div class="fg"><label>Data *</label><input id="ft-data" type="date" value="${data||today()}"></div>
+        <div class="fg"><label>Tipo</label><select id="ft-tipo"><option value="puc">🎓 PUC</option><option value="carreira">💼 Carreira</option><option value="review">🔄 Revisão</option><option value="ingles">🌐 Inglês</option><option value="project">🚀 Projeto</option></select></div>
+      </div>
+      <div class="fg"><label>Link (opcional)</label><input id="ft-link" placeholder="https://..."></div>`;
+    document.getElementById('modal-acts').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarTarefa()">Salvar</button>`;
+  }else if(tipo==='meta'){
+    document.getElementById('modal-title').textContent='Nova Meta de Carreira';
+    document.getElementById('modal-sub').textContent='Adicione ao plano de 36 meses';
+    document.getElementById('modal-content').innerHTML=`
+      <div class="fg"><label>Descrição *</label><input id="fm-texto" placeholder="Ex: Concluir curso SQL"></div>
+      <div class="fr">
+        <div class="fg"><label>Fase</label><select id="fm-fase"><option value="1">Fase 1 (0-6m)</option><option value="2">Fase 2 (6-24m)</option><option value="3">Fase 3 (2-5a)</option></select></div>
+        <div class="fg"><label>Prazo</label><input id="fm-prazo" type="date"></div>
+      </div>
+      <div class="fg"><label>Link (opcional)</label><input id="fm-link" placeholder="https://..."></div>`;
+    document.getElementById('modal-acts').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarMeta()">Salvar</button>`;
+  }
+}
+
+function closeModal(){document.getElementById('modal-ov').classList.remove('open');}
+document.getElementById('modal-ov').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function salvarAula(){
+  const num=parseInt(document.getElementById('f-num').value);
+  const titulo=document.getElementById('f-titulo').value.trim();
+  const resumo=document.getElementById('f-resumo').value.trim();
+  if(!titulo||!resumo||isNaN(num)){alert('Preencha: Nº, Título e Resumo.');return;}
+  const nova={
+    id:'cap'+Date.now(),num,tipo:document.getElementById('f-tipo').value,
+    titulo,subtitulo:document.getElementById('f-sub').value.trim(),
+    topicos:(document.getElementById('f-topicos').value||'').split(',').map(t=>t.trim()).filter(Boolean),
+    semana:Math.ceil(num/2)||1,mes:Math.ceil(num/8)||1,trimestre:Math.ceil(num/24)||1,
+    resumo,explicacao:document.getElementById('f-explicacao').value.trim(),
+    anotacoes:document.getElementById('f-anotacoes').value.trim(),
+    completo:document.getElementById('f-completo').value.trim(),
+    quiz:parseQuiz(document.getElementById('f-quiz').value)
+  };
+  DB.aulas.push(nova);save();closeModal();renderNav();showChapter(nova.id);
+}
+
+function salvarTarefa(){
+  const titulo=document.getElementById('ft-titulo').value.trim();
+  const data=document.getElementById('ft-data').value;
+  if(!titulo||!data){alert('Preencha título e data.');return;}
+  DB.tarefas.push({id:'t'+Date.now(),data,titulo,tipo:document.getElementById('ft-tipo').value,link:document.getElementById('ft-link').value.trim(),done:false});
+  save();closeModal();
+  if(currentView==='agenda-view')renderAgenda();
+  else if(currentView==='dashboard-view')renderDashboard();
+  renderNav();
+}
+
+function salvarMeta(){
+  const texto=document.getElementById('fm-texto').value.trim();
+  if(!texto){alert('Preencha a descrição.');return;}
+  if(!DB.metas||DB.metas.length===0)DB.metas=[...METAS_DEFAULT];
+  DB.metas.push({id:'m'+Date.now(),fase:parseInt(document.getElementById('fm-fase').value),texto,prazo:document.getElementById('fm-prazo').value||todayPlus(90),link:document.getElementById('fm-link').value.trim(),done:false});
+  save();closeModal();renderMetas();
+}
+
+function parseQuiz(raw){
+  if(!raw||!raw.trim())return[];
+  const qs=[];
+  const blocks=raw.split(/\n(?=Pergunta\s+\d+[:.])/i).filter(b=>b.trim());
+  blocks.forEach(block=>{
+    const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);
+    if(!lines.length)return;
+    const pergLine=lines[0].replace(/^Pergunta\s+\d+[:.]\s*/i,'').trim();
+    const optTexts=[];let correct=-1,exp='';
+    lines.slice(1).forEach(l=>{
+      const m=l.match(/^([a-e])\)\s*(\*?)(.*)/i);
+      if(m){const marked=m[2]==='*';if(marked)correct=optTexts.length;optTexts.push(m[3].trim());}
+      else if(/^explicaç[aã]o[:.]/i.test(l))exp=l.replace(/^explicaç[aã]o[:.]\s*/i,'').trim();
+    });
+    if(pergLine&&optTexts.length>=2)qs.push({q:pergLine,opts:optTexts,correct:correct>=0?correct:0,exp});
+  });
+  return qs;
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+load();
+if(!DB.metas||DB.metas.length===0)DB.metas=[...METAS_DEFAULT];
+gerarTarefasIniciais();
+save();
+renderNav();
+showView('dashboard');
+</script>
+</body>
+</html>

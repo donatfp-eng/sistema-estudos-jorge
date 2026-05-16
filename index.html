@@ -343,6 +343,7 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
       <button class="btn btn-ghost btn-sm" onclick="showView('agenda')">📅 Agenda</button>
       <button class="btn btn-ghost btn-sm" onclick="showProvas()">📊 Provas</button>
       <button class="btn btn-primary btn-sm" onclick="openModal('aula')">+ Nova Aula</button>
+      <button class="btn btn-red btn-sm" onclick="confirmarReset()" title="Apagar tudo e recomeçar do zero">🔄 Reset</button>
     </div>
   </header>
   <main id="content">
@@ -379,16 +380,30 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
 // ══════════════════════════════════════════════════
 // STORAGE
 // ══════════════════════════════════════════════════
-const SK = 'jorge_sistema_v5';
+const SK = 'jorge_sistema_v6_clean';
 let DB = {aulas:[], tarefas:[], historico:[], metas:[], streaks:{}};
+ 
+function resetTotal(){
+  // Limpa TODOS os storages antigos
+  ['jorge_sistema_v4','jorge_sistema_v5','jorge_sistema_v6_clean'].forEach(k=>{
+    try{localStorage.removeItem(k);}catch(e){}
+  });
+  DB = {aulas:[CAP0], tarefas:[], historico:[], metas:[...METAS_DEFAULT], streaks:{}};
+  gerarTarefasIniciais();
+  save();
+  renderNav();
+  showView('dashboard');
+  alert('✅ Sistema resetado! Todas as tarefas e aulas foram reiniciadas do zero.');
+}
  
 function load(){
   try{
-    // tenta migrar do v4
-    const old = localStorage.getItem('jorge_sistema_v4');
     const cur = localStorage.getItem(SK);
-    if(cur){const d=JSON.parse(cur);DB={...DB,...d};}
-    else if(old){const d=JSON.parse(old);DB={...DB,...d};}
+    if(cur){
+      const d=JSON.parse(cur);
+      DB={...DB,...d};
+    }
+    // garante cap0 sempre presente
     if(!DB.aulas.find(a=>a.id==='cap0'))DB.aulas.unshift(CAP0);
   }catch(e){DB.aulas=[CAP0];}
 }
@@ -1339,12 +1354,22 @@ function parseQuiz(raw){
   return qs;
 }
  
+function confirmarReset(){
+  if(confirm('ATENCAO: Isso vai apagar TODAS as tarefas e aulas adicionadas, recomeçando do zero.\nAs metas de carreira serao mantidas.\nTem certeza?')){
+    resetTotal();
+  }
+}
+ 
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
+// Remove storages antigos para evitar conflito
+try{localStorage.removeItem('jorge_sistema_v4');}catch(e){}
+try{localStorage.removeItem('jorge_sistema_v5');}catch(e){}
+ 
 load();
-if(!DB.metas||DB.metas.length===0)DB.metas=[...METAS_DEFAULT];
-gerarTarefasIniciais();
+if(!DB.metas||DB.metas.length===0) DB.metas=[...METAS_DEFAULT];
+if(!DB.tarefas||DB.tarefas.length===0) gerarTarefasIniciais();
 save();
 renderNav();
 showView('dashboard');

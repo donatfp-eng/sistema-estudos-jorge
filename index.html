@@ -18,7 +18,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:flex;min-height:100vh;font-size:15px;}
-
+ 
 /* ─── SIDEBAR ─── */
 #sb{width:var(--sw);min-width:var(--sw);background:var(--ink);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow:hidden;}
 .sb-logo{padding:22px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08);}
@@ -46,7 +46,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .sb-curso-data{font-size:10px;color:var(--accent2);margin-bottom:3px;}
 .sb-curso-link{font-size:10px;color:#6bb5ff;text-decoration:none;display:block;}
 .sb-curso-link:hover{text-decoration:underline;}
-
+ 
 /* ─── MAIN ─── */
 #main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh;}
 #topbar{background:var(--paper);border-bottom:1px solid var(--line);padding:0 36px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
@@ -63,10 +63,10 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .btn-green{background:var(--green);color:#fff;}
 .btn-red{background:var(--red);color:#fff;}
 .btn-sm{padding:4px 10px;font-size:11px;}
-
+ 
 /* ─── VIEWS ─── */
 #content{flex:1;padding:32px 36px 60px;max-width:1100px;margin:0 auto;width:100%;}
-
+ 
 /* ─── DASHBOARD ─── */
 .dash-greeting{margin-bottom:28px;}
 .dash-greeting h1{font-family:var(--serif);font-size:28px;font-weight:700;margin-bottom:4px;}
@@ -81,7 +81,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .kpi.orange .kpi-val{color:var(--accent);}
 .kpi.red .kpi-val{color:var(--red);}
 .kpi.purple .kpi-val{color:var(--purple);}
-
+ 
 /* ─── PAINEL PENDÊNCIAS ─── */
 .pendencias-banner{background:linear-gradient(135deg,#7f1010,#b71c1c);border-radius:14px;padding:18px 22px;margin-bottom:20px;color:#fff;border:2px solid #c62828;}
 .pendencias-banner-titulo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#ffcdd2;margin-bottom:6px;}
@@ -95,7 +95,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .pendencia-check{width:18px;height:18px;border:2px solid rgba(255,255,255,0.5);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .pendencia-check:hover{border-color:#fff;background:rgba(255,255,255,0.2);}
 .pendencias-ver-mais{font-size:12px;color:#ffcdd2;text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline;}
-
+ 
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
 .dash-grid.full{grid-template-columns:1fr;}
 .card{background:#fff;border:1px solid var(--paper3);border-radius:12px;overflow:hidden;}
@@ -103,7 +103,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .card-head-title{font-size:13px;font-weight:600;color:var(--ink);}
 .card-head-sub{font-size:11px;color:var(--ink3);}
 .card-body{padding:14px 18px;}
-
+ 
 /* ─── PROGRESS BARS ─── */
 .prog-item{margin-bottom:12px;}
 .prog-item:last-child{margin-bottom:0;}
@@ -117,7 +117,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .fill-red{background:var(--red);}
 .fill-purple{background:var(--purple);}
 .fill-gold{background:var(--accent2);}
-
+ 
 /* ─── TASK ITEMS ─── */
 .task-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
 .task-item:last-child{border-bottom:none;}
@@ -138,14 +138,14 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .tag-project{background:#ede7f6;color:var(--purple);}
 .tag-atrasado{background:#ffebee;color:var(--red);font-weight:600;}
 .task-late-badge{font-size:10px;color:#fff;background:var(--red);padding:1px 6px;border-radius:10px;font-weight:600;}
-
+ 
 /* ─── SEÇÃO ATRASADAS ─── */
 .atrasadas-section{background:#fff5f5;border:2px solid #ffcdd2;border-radius:12px;overflow:hidden;margin-bottom:20px;}
 .atrasadas-header{background:var(--red);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
 .atrasadas-header-title{font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;}
 .atrasadas-header-count{font-family:var(--mono);font-size:11px;background:rgba(255,255,255,0.25);color:#fff;padding:2px 8px;border-radius:10px;}
 .atrasadas-body{padding:0 18px;}
-
+ 
 /* ─── AGENDA ─── */
 .agenda-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
 .agenda-title{font-family:var(--serif);font-size:18px;font-weight:600;flex:1;}
@@ -169,7 +169,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .dt-project{background:#ede7f6;color:#4a148c;}
 .day-add{font-size:11px;color:var(--ink3);padding:3px 8px;cursor:pointer;opacity:.6;}
 .day-add:hover{opacity:1;color:var(--accent);}
-
+ 
 /* ─── METAS ─── */
 .meta-phase{margin-bottom:20px;}
 .meta-phase-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
@@ -186,7 +186,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .meta-text.done{text-decoration:line-through;color:var(--ink3);}
 .meta-deadline{font-size:11px;color:var(--ink3);margin-top:2px;}
 .meta-deadline.urgent{color:var(--red);font-weight:500;}
-
+ 
 /* ─── CAPÍTULOS ─── */
 .chapter-header{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--line);}
 .chapter-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
@@ -209,7 +209,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .tip-box{background:#e8f5e9;border-left:4px solid var(--green);}
 .info-box{background:#e3f0ff;border-left:4px solid var(--blue);}
 .divider-orn{text-align:center;color:var(--paper3);font-size:16px;margin:24px 0;letter-spacing:10px;}
-
+ 
 /* ─── QUIZ ─── */
 .quiz-wrap{background:#fff;border:1px solid var(--paper3);border-radius:14px;overflow:hidden;}
 .quiz-top{background:linear-gradient(135deg,#4a148c,#7b1fa2);padding:18px 22px;color:#fff;}
@@ -248,7 +248,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .qr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:16px 0 22px;}
 .qr-item{padding:8px 4px;border-radius:7px;font-size:11px;text-align:center;}
 .qr-ok{background:#e8f5e9;color:#2e7d32;}.qr-fail{background:#ffebee;color:#c62828;}
-
+ 
 /* ─── PROVAS ─── */
 .prova-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:22px;}
 .prova-tab{font-size:13px;font-weight:500;padding:9px 16px;cursor:pointer;border:none;background:transparent;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-2px;}
@@ -286,7 +286,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .hs-great{color:var(--green);font-family:var(--mono);}
 .hs-good{color:var(--accent2);font-family:var(--mono);}
 .hs-low{color:var(--red);font-family:var(--mono);}
-
+ 
 /* ─── MODAL ─── */
 #modal-ov{display:none;position:fixed;inset:0;background:rgba(26,23,20,.75);z-index:200;align-items:center;justify-content:center;padding:20px;}
 #modal-ov.open{display:flex;}
@@ -301,7 +301,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .modal-acts{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;}
 .modal-sec{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px;margin:18px 0 12px;}
-
+ 
 /* ─── SEARCH ─── */
 #search-results{display:none;}
 .sh{padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;}
@@ -310,13 +310,13 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);display:fl
 .sh-title{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);transition:color .15s;}
 .sh-snip{font-size:12px;color:var(--ink2);line-height:1.5;}
 mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
-
+ 
 /* ─── WELCOME ─── */
 #welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px;}
 .wlc-icon{font-size:44px;margin-bottom:16px;}
 .wlc-title{font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:8px;}
 .wlc-sub{font-size:14px;color:var(--ink3);margin-bottom:22px;line-height:1.6;}
-
+ 
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .chapter-header,.section,.kpi-row,.dash-grid{animation:fadeUp .35s ease;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.7;}}
@@ -324,7 +324,7 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
 </style>
 </head>
 <body>
-
+ 
 <aside id="sb">
   <div class="sb-logo">
     <div class="sb-logo-name">Jorge Doná</div>
@@ -334,7 +334,7 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
   <nav class="sb-nav" id="nav-list"></nav>
   <div class="sb-footer" id="sb-footer"></div>
 </aside>
-
+ 
 <div id="main">
   <header id="topbar">
     <div class="tb-left" id="breadcrumb">Sistema &rsaquo; <span>Início</span></div>
@@ -365,7 +365,7 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
     <div id="search-results"></div>
   </main>
 </div>
-
+ 
 <div id="modal-ov">
   <div id="modal-box">
     <div class="modal-title" id="modal-title">Nova Aula</div>
@@ -374,14 +374,14 @@ mark{background:#fff3cc;border-radius:2px;padding:0 2px;}
     <div class="modal-acts" id="modal-acts"></div>
   </div>
 </div>
-
+ 
 <script>
 // ══════════════════════════════════════════════════
 // STORAGE
 // ══════════════════════════════════════════════════
 const SK = 'jorge_sistema_v5';
 let DB = {aulas:[], tarefas:[], historico:[], metas:[], streaks:{}};
-
+ 
 function load(){
   try{
     // tenta migrar do v4
@@ -393,7 +393,7 @@ function load(){
   }catch(e){DB.aulas=[CAP0];}
 }
 function save(){try{localStorage.setItem(SK,JSON.stringify(DB));}catch(e){}}
-
+ 
 // ══════════════════════════════════════════════════
 // HELPERS DE DATA
 // ══════════════════════════════════════════════════
@@ -415,7 +415,7 @@ function diasAtraso(ds){
   const diff=Math.floor((new Date(today()+'T12:00:00')-new Date(ds+'T12:00:00'))/(1000*60*60*24));
   return diff;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // LÓGICA DE PENDÊNCIAS — NÚCLEO DA MUDANÇA
 // ══════════════════════════════════════════════════
@@ -423,7 +423,7 @@ function diasAtraso(ds){
 // Tarefa é "de hoje" se: data === hoje
 // Tarefa é "futura" se: data > hoje
 // NUNCA reagendamos automaticamente — o usuário decide
-
+ 
 function getAtrasadas(){
   return DB.tarefas
     .filter(t => !t.done && t.data < today())
@@ -441,7 +441,7 @@ function getPendentesHoje(){
 function totalPendentes(){
   return DB.tarefas.filter(t=>!t.done&&t.data<=today()).length;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // CAP 0
 // ══════════════════════════════════════════════════
@@ -469,7 +469,7 @@ const CAP0={
   completo:`Transcrição da aula inaugural — Semana de Integração PUCPR.\n\nESTRUTURA DO AVA\nDisciplina de ambientação: GPS da graduação. Quiz da semana de integração: liberado na segunda-feira, 5 tentativas, mínimo 7.\n\nPUC ACOLHE — 4 eixos: Aprendizagem / Saúde mental / Inclusão / Proteção social\n\nCONTEÚDO\n1. EXPECTATIVAS E METAS: clareza sobre por que escolheu o curso.\n2. AUTONOMIA NO EAD: estudante é o centro / 1h/semana (domingo) para planejar.\n3. SISTEMA DE 3 METAS: mínima / ideal / superada.\n4. HABILIDADES DE ESTUDO: sempre produzir material / revisão regular.\n5. POMODORO: 25 min foco + 5 min pausa / pausa sem celular.\n6. ROTINA: mapear dia a dia / reservar horários inclusive para DESCANSO.`,
   quiz:CAP0_QUIZ
 };
-
+ 
 // ══════════════════════════════════════════════════
 // METAS DEFAULT
 // ══════════════════════════════════════════════════
@@ -489,7 +489,7 @@ const METAS_DEFAULT=[
   {id:'m13',fase:3,texto:'Candidatura ativa: Financial Data Analyst — Volvo / Bosch / Mondelez',prazo:'2028-09-30',done:false},
   {id:'m14',fase:3,texto:'CRC em mãos + portfólio consolidado = Controller Analítico',prazo:'2029-05-31',done:false},
 ];
-
+ 
 // ══════════════════════════════════════════════════
 // TAREFAS INICIAIS
 // ══════════════════════════════════════════════════
@@ -568,7 +568,7 @@ function gerarTarefasIniciais(){
   ];
   save();
 }
-
+ 
 // ══════════════════════════════════════════════════
 // VIEW MANAGER
 // ══════════════════════════════════════════════════
@@ -578,7 +578,7 @@ let provaState={};
 let provaTimer=null;
 let aulaAtual=null;
 let mostrarTodasAtrasadas=false;
-
+ 
 const VIEWS=['welcome','dashboard-view','agenda-view','metas-view','chapter-view','provas-view','search-results','guia-view'];
 function setView(id){
   VIEWS.forEach(v=>{const el=document.getElementById(v);if(el)el.style.display='none';});
@@ -586,7 +586,7 @@ function setView(id){
   if(t)t.style.display=(id==='welcome')?'flex':'block';
   currentView=id;
 }
-
+ 
 function showView(name){
   document.getElementById('search-input').value='';
   aulaAtual=null;
@@ -597,7 +597,7 @@ function showView(name){
   else if(name==='guia'){renderGuia();setView('guia-view');document.getElementById('breadcrumb').innerHTML='Sistema &rsaquo; <span>Como usar o sistema</span>';}
   renderNav();
 }
-
+ 
 // ══════════════════════════════════════════════════
 // GUIA
 // ══════════════════════════════════════════════════
@@ -625,14 +625,14 @@ function renderGuia(){
     </div>`).join('')}
   </div>`;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // NAV
 // ══════════════════════════════════════════════════
 function renderNav(){
   const nav=document.getElementById('nav-list');
   nav.innerHTML='';
-
+ 
   function addLabel(t){const l=document.createElement('div');l.className='nav-label';l.textContent=t;nav.appendChild(l);}
   function addItem(icon,label,action,badgeCount,badgeRed){
     const d=document.createElement('div');
@@ -644,17 +644,17 @@ function renderNav(){
     nav.appendChild(d);
     return d;
   }
-
+ 
   const atrasadasCount=getAtrasadas().length;
   const pendenteHojeCount=getPendentesHoje().length;
-
+ 
   addLabel('Sistema');
   addItem('📊','Dashboard',"showView('dashboard')",atrasadasCount>0?atrasadasCount:0,true);
   addItem('📅','Agenda',"showView('agenda')",pendenteHojeCount>0?pendenteHojeCount:0,false);
   addItem('📖','Como usar o sistema',"showView('guia')",0,false);
   addItem('🎯','Metas de Carreira',"showView('metas')",0,false);
   addItem('📊','Provas',"showProvas()",0,false);
-
+ 
   addLabel('Disciplinas — AVA PUCPR');
   const DISCIPLINAS_AVA=[
     {nome:'📗 Demonstrações Contábeis',prog:'8%',link:'https://pucpr.grupoa.education/plataforma/course/4917624',encerra:'13/08/2026'},
@@ -667,7 +667,7 @@ function renderNav(){
     el.innerHTML=`<div class="sb-curso-nome">${d.nome}</div><div class="sb-curso-data">Progresso: ${d.prog} · Encerra ${d.encerra}</div><a class="sb-curso-link" href="${d.link}" target="_blank">↗ Acessar no AVA</a>`;
     nav.appendChild(el);
   });
-
+ 
   addLabel('Cursos para Matricular');
   const CURSOS_SB=[
     {nome:'Power BI — Data Science Academy',data:'Iniciar agora',link:'https://www.datascienceacademy.com.br/course/microsoft-power-bi-para-data-science'},
@@ -685,7 +685,7 @@ function renderNav(){
     d.innerHTML=`<div class="sb-curso-nome">${c.nome}</div><div class="sb-curso-data">📅 ${c.data}</div><a class="sb-curso-link" href="${c.link}" target="_blank">↗ Acessar / Matricular</a>`;
     nav.appendChild(d);
   });
-
+ 
   addLabel('Livro de Aulas');
   [...DB.aulas].sort((a,b)=>a.num-b.num).forEach(aula=>{
     const d=document.createElement('div');
@@ -694,7 +694,7 @@ function renderNav(){
     d.onclick=()=>showChapter(aula.id);
     nav.appendChild(d);
   });
-
+ 
   // footer
   const total=DB.tarefas.filter(t=>t.data===today()).length;
   const done=DB.tarefas.filter(t=>t.data===today()&&t.done).length;
@@ -702,7 +702,7 @@ function renderNav(){
   document.getElementById('sb-footer').innerHTML=`Hoje: ${done}/${total} · Atrasadas: <span style="color:${totalAtras>0?'#ff6b6b':'#aaa'}">${totalAtras}</span>`;
   document.getElementById('tb-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'});
 }
-
+ 
 // ══════════════════════════════════════════════════
 // DASHBOARD — COM PAINEL DE PENDÊNCIAS
 // ══════════════════════════════════════════════════
@@ -711,16 +711,16 @@ function renderDashboard(){
   const hojeT=getHoje();
   const pendentesHoje=getPendentesHoje();
   const doneTodayCount=hojeT.filter(t=>t.done).length;
-
+ 
   const hr=new Date().getHours();
   const saud=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';
-
+ 
   const pv=document.getElementById('dashboard-view');
-
+ 
   // ── PAINEL PENDÊNCIAS (sempre visível se houver)
   let pendenciasHTML='';
   const totalPend=atrasadas.length+pendentesHoje.length;
-
+ 
   if(atrasadas.length>0){
     const limitar=!mostrarTodasAtrasadas&&atrasadas.length>5;
     const visiveis=limitar?atrasadas.slice(0,5):atrasadas;
@@ -748,7 +748,7 @@ function renderDashboard(){
       <div><div style="font-size:15px;font-weight:600;color:var(--green)">Tudo em dia!</div><div style="font-size:13px;color:var(--ink2)">Nenhuma pendência em atraso. Continue assim!</div></div>
     </div>`;
   }
-
+ 
   // ── PRÓXIMA TAREFA DE HOJE
   const proxima=pendentesHoje[0]||atrasadas[0];
   let agoraHTML='';
@@ -765,7 +765,7 @@ function renderDashboard(){
       </div>
     </div>`;
   }
-
+ 
   // ── PROGRESSO
   const pucDone=DB.tarefas.filter(t=>t.tipo==='puc'&&t.done).length;
   const pucTotal=Math.max(DB.tarefas.filter(t=>t.tipo==='puc').length,1);
@@ -773,16 +773,16 @@ function renderDashboard(){
   const carTotal=Math.max(DB.tarefas.filter(t=>t.tipo==='carreira').length,1);
   const totalDone=DB.tarefas.filter(t=>t.done).length;
   const totalTasks=Math.max(DB.tarefas.length,1);
-
+ 
   pv.innerHTML=`
   <div class="dash-greeting">
     <h1>${saud}, Jorge 👋</h1>
     <p>${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})} · ${doneTodayCount}/${hojeT.length} tarefas de hoje · ${atrasadas.length} pendência${atrasadas.length!==1?'s':''} em atraso</p>
   </div>
-
+ 
   ${pendenciasHTML}
   ${agoraHTML}
-
+ 
   <div class="dash-grid">
     <div class="card">
       <div class="card-head">
@@ -796,7 +796,7 @@ function renderDashboard(){
         <button onclick="openModal('tarefa')" style="width:100%;margin-top:10px;font-family:var(--sans);font-size:12px;color:var(--accent);background:none;border:1px dashed var(--accent);border-radius:8px;padding:7px;cursor:pointer">+ Adicionar tarefa</button>
       </div>
     </div>
-
+ 
     <div class="card">
       <div class="card-head"><span class="card-head-title">📈 Progresso geral</span></div>
       <div class="card-body">
@@ -825,7 +825,7 @@ function renderDashboard(){
     </div>
   </div>`;
 }
-
+ 
 function taskHTML(t, ctx){
   const tagMap={puc:'tag-puc',carreira:'tag-carreira',ingles:'tag-ingles',review:'tag-review',project:'tag-project'};
   const tagLabel={puc:'PUC',carreira:'Carreira',ingles:'Inglês',review:'Revisão',project:'Projeto'};
@@ -843,7 +843,7 @@ function taskHTML(t, ctx){
     <div onclick="removeTask('${t.id}','${ctx}')" title="Remover" style="color:var(--ink3);cursor:pointer;font-size:12px;padding:2px 6px;border-radius:4px;opacity:.5" onmouseenter="this.style.opacity=1;this.style.color='var(--red)'" onmouseleave="this.style.opacity=.5;this.style.color='var(--ink3)'">✕</div>
   </div>`;
 }
-
+ 
 function toggleTask(id, ctx){
   const t=DB.tarefas.find(t=>t.id===id);
   if(!t)return;
@@ -853,7 +853,7 @@ function toggleTask(id, ctx){
   else if(ctx==='agenda')renderAgenda();
   renderNav();
 }
-
+ 
 function removeTask(id, ctx){
   if(!confirm('Remover esta tarefa?'))return;
   DB.tarefas=DB.tarefas.filter(t=>t.id!==id);
@@ -862,24 +862,24 @@ function removeTask(id, ctx){
   else if(ctx==='agenda')renderAgenda();
   renderNav();
 }
-
+ 
 // ══════════════════════════════════════════════════
 // AGENDA — COM SEÇÃO DE ATRASADAS
 // ══════════════════════════════════════════════════
 let agendaWeekOffset=0;
-
+ 
 function renderAgenda(){
   const pv=document.getElementById('agenda-view');
   const atrasadas=getAtrasadas();
   const hojeT=getHoje();
   const amanhaT=getAmanha();
-
+ 
   const weekStart=new Date();
   weekStart.setDate(weekStart.getDate()-weekStart.getDay()+agendaWeekOffset*7);
   let days=[];
   for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);days.push(d);}
   const monthLabel=weekStart.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-
+ 
   let weekHtml='<div class="week-grid">';
   days.forEach(d=>{
     const ds=fmtDate(d);
@@ -897,7 +897,7 @@ function renderAgenda(){
     </div>`;
   });
   weekHtml+='</div>';
-
+ 
   // seção atrasadas na agenda
   let atrasadasHTML='';
   if(atrasadas.length>0){
@@ -911,7 +911,7 @@ function renderAgenda(){
       </div>
     </div>`;
   }
-
+ 
   pv.innerHTML=`
   <div class="agenda-nav">
     <button class="btn btn-ghost btn-sm" onclick="agendaWeekOffset--;renderAgenda()">← Semana anterior</button>
@@ -940,16 +940,16 @@ function renderAgenda(){
     </div>
   </div>`;
 }
-
+ 
 function toggleTaskByDate(id){
   const t=DB.tarefas.find(t=>t.id===id);
   if(!t)return;
   t.done=!t.done;
   save();renderAgenda();renderNav();
 }
-
+ 
 function openModalTarefaData(data){openModal('tarefa',data);}
-
+ 
 // ══════════════════════════════════════════════════
 // METAS
 // ══════════════════════════════════════════════════
@@ -992,12 +992,12 @@ function renderMetas(){
   html+=`<div style="text-align:right;margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="openModal('meta')">+ Nova Meta</button></div>`;
   pv.innerHTML=html;
 }
-
+ 
 function toggleMeta(id){
   const m=DB.metas.find(m=>m.id===id);
   if(!m)return;m.done=!m.done;save();renderMetas();renderNav();
 }
-
+ 
 // ══════════════════════════════════════════════════
 // LIVRO — CAPÍTULOS
 // ══════════════════════════════════════════════════
@@ -1023,13 +1023,13 @@ function showChapter(id){
   if(aula.completo)html+=sec('📄','i-full','Conteúdo Completo',renderFull(aula.completo));
   document.getElementById('chapter-view').innerHTML=html;window.scrollTo(0,0);
 }
-
+ 
 function sec(icon,cls,title,body){return `<div class="section"><div class="sec-head"><div class="sec-icon ${cls}">${icon}</div><h2 class="sec-title">${title}</h2><div class="sec-rule"></div></div>${body}</div><div class="divider-orn">· · ·</div>`;}
 function renderResumo(t){const ls=t.split('\n').filter(l=>l.trim());let h='<div class="prose">';ls.forEach(l=>{const s=l.trim();if(/^\d+\./.test(s))h+=`<p><strong>${s.match(/^\d+\.\s*/)[0]}</strong>${s.replace(/^\d+\.\s*/,'')}</p>`;else if(s.startsWith('•')||s.startsWith('-'))h+=`<p style="padding-left:12px">${s}</p>`;else h+=`<p>${s}</p>`;});return h+'</div>';}
 function renderExp(t){const ps=t.split('\n\n').filter(p=>p.trim());let h='<div class="prose">';ps.forEach(p=>{const s=p.trim();if(/^\d+\./.test(s)){const[f,...r]=s.split('\n');h+=`<p><strong>${f}</strong></p>`;if(r.length)h+=`<p>${r.join('<br>')}</p>`;}else h+=`<p>${s.replace(/\n/g,'<br>')}</p>`;});return h+'</div>';}
 function renderAnn(t){const ls=t.split('\n').filter(l=>l.trim());let h='';ls.forEach(l=>{const s=l.trim();if(s.startsWith('⚠️'))h+=`<div class="alert-box"><strong>Atenção:</strong> ${s.replace('⚠️','').trim()}</div>`;else if(s.startsWith('✔'))h+=`<div class="tip-box">${s}</div>`;else if(s.startsWith('•')||s.startsWith('-'))h+=`<div class="info-box">${s}</div>`;else if(s===s.toUpperCase()&&s.length>4)h+=`<p style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin:12px 0 4px">${s}</p>`;else h+=`<p class="prose" style="font-size:13px">${s}</p>`;});return h;}
 function renderFull(t){const ps=t.split('\n\n').filter(p=>p.trim());let h='<div class="prose">';ps.forEach(p=>{const s=p.trim();if(s===s.toUpperCase()&&s.length>4&&s.length<80)h+=`<p style="font-weight:500;color:var(--ink);margin-top:1.2em">${s}</p>`;else h+=`<p>${s.replace(/\n/g,'<br>')}</p>`;});return h+'</div>';}
-
+ 
 // ══════════════════════════════════════════════════
 // QUIZ
 // ══════════════════════════════════════════════════
@@ -1051,7 +1051,7 @@ function renderQuiz(aula){
   if(done)html+=`<div class="info-box" style="margin-top:10px;font-size:12px">📊 Último resultado: <strong>${done.acertos}/${qs.length}</strong> (${done.pct}%) em ${done.data}</div>`;
   return html;
 }
-
+ 
 function selQuiz(qid,qi,oi){
   if(quizState[qid]===undefined)quizState[qid]={};
   if(quizState[qid][qi]!==undefined)return;
@@ -1066,7 +1066,7 @@ function selQuiz(qid,qi,oi){
   document.getElementById(`qnxt-${qid}-${qi}`).disabled=false;
   document.getElementById(`qp-${qid}`).style.width=(Object.keys(quizState[qid]).length/aula.quiz.length*100)+'%';
 }
-
+ 
 function qNav(qid,cur,dir){
   const aula=DB.aulas.find(a=>a.id===qid);const total=aula.quiz.length;const next=cur+dir;
   if(next<0)return;
@@ -1074,7 +1074,7 @@ function qNav(qid,cur,dir){
   document.getElementById(`qq-${qid}-${cur}`).style.display='none';
   document.getElementById(`qq-${qid}-${next}`).style.display='block';
 }
-
+ 
 function showQuizResult(qid){
   const aula=DB.aulas.find(a=>a.id===qid);const qs=aula.quiz;
   const st=quizState[qid]||{};const acertos=qs.filter((q,i)=>st[i]===q.correct).length;
@@ -1087,7 +1087,7 @@ function showQuizResult(qid){
   res.innerHTML=`<div class="quiz-result"><div class="qr-score ${cls}">${pct}%</div><div class="qr-label">${lbl}</div><div class="qr-sub">${acertos} de ${qs.length} corretas</div><div class="qr-grid">${grid}</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn btn-ghost" onclick="quizState['${qid}']={};showChapter('${qid}')">↺ Refazer</button><button class="btn btn-primary" onclick="gabarito('${qid}')">Ver Gabarito</button></div></div>`;
   DB.historico.push({id:qid,tipo:'quiz',titulo:aula.titulo,acertos,total:qs.length,pct,data:new Date().toLocaleDateString('pt-BR')});save();
 }
-
+ 
 function gabarito(qid){
   const aula=DB.aulas.find(a=>a.id===qid);const st=quizState[qid]||{};
   const box=document.getElementById(`quiz-${qid}`);
@@ -1099,7 +1099,7 @@ function gabarito(qid){
   });
   h+='</div>';box.innerHTML=h;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // PROVAS
 // ══════════════════════════════════════════════════
@@ -1119,13 +1119,13 @@ function showProvas(){
   <div id="pt-t" style="display:none">${renderProvaTab('trimestral')}</div>
   <div id="pt-h" style="display:none">${renderHistorico()}</div>`;
 }
-
+ 
 function switchTab(btn,id){
   document.querySelectorAll('.prova-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   ['pt-s','pt-m','pt-t','pt-h'].forEach(i=>{document.getElementById(i).style.display=i===id?'block':'none';});
 }
-
+ 
 function renderProvaTab(tipo){
   const key={semanal:'semana',mensal:'mes',trimestral:'trimestre'}[tipo];
   const label={semanal:'Prova Semanal',mensal:'Prova Mensal',trimestral:'Prova Trimestral'}[tipo];
@@ -1144,13 +1144,13 @@ function renderProvaTab(tipo){
   });
   return html;
 }
-
+ 
 function iniciarProva(pid,qs){
   provaState[pid]={qs,resp:{},inicio:new Date()};
   const tempo=pid.startsWith('semanal')?30:pid.startsWith('mensal')?60:90;
   renderProvaForm(pid,qs,tempo);startTimer(pid,tempo*60);
 }
-
+ 
 function renderProvaForm(pid,qs,min){
   const c=document.getElementById(`pc-${pid}`);
   let h=`<div style="position:sticky;top:50px;background:var(--paper);z-index:10;border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:500">⏱ Tempo restante</span><span class="ptimer" id="pt-${pid}">${String(min).padStart(2,'0')}:00</span><button class="btn btn-primary btn-sm" onclick="finalizarProva('${pid}')">Entregar</button></div><div class="pc-body">`;
@@ -1167,19 +1167,19 @@ function renderProvaForm(pid,qs,min){
   });
   h+=`</div>`;c.innerHTML=h;
 }
-
+ 
 function selProva(pid,qi,oi){
   const qs=provaState[pid].qs[qi];
   qs.opts.forEach((_,i)=>document.getElementById(`po-${pid}-${qi}-${i}`)?.classList.remove('selected'));
   document.getElementById(`po-${pid}-${qi}-${oi}`)?.classList.add('selected');
   provaState[pid].resp[qi]=oi;
 }
-
+ 
 function startTimer(pid,sec){
   let rem=sec;if(provaTimer)clearInterval(provaTimer);
   provaTimer=setInterval(()=>{rem--;const el=document.getElementById(`pt-${pid}`);if(!el){clearInterval(provaTimer);return;}const m=Math.floor(rem/60),s=rem%60;el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(rem<=300)el.classList.add('urgent');if(rem<=0){clearInterval(provaTimer);finalizarProva(pid);}},1000);
 }
-
+ 
 function finalizarProva(pid){
   if(provaTimer){clearInterval(provaTimer);provaTimer=null;}
   const ps=provaState[pid];if(!ps)return;
@@ -1200,13 +1200,13 @@ function finalizarProva(pid){
   DB.historico.push({id:pid,tipo,acertos:ac,total:obj,pct,data:new Date().toLocaleDateString('pt-BR'),titulo:`Prova ${tipo.charAt(0).toUpperCase()+tipo.slice(1)} — Per.${pid.split('-').pop()}`});
   save();renderNav();
 }
-
+ 
 function renderHistorico(){
   if(!DB.historico.length)return'<div style="font-size:13px;color:var(--ink3);padding:20px;text-align:center">Nenhuma avaliação ainda.</div>';
   const s=[...DB.historico].reverse();
   return`<table class="hist-table"><thead><tr><th>Data</th><th>Avaliação</th><th>Tipo</th><th>Acertos</th><th>Nota</th></tr></thead><tbody>${s.map(h=>{const cls=h.pct>=80?'hs-great':h.pct>=60?'hs-good':'hs-low';return`<tr><td>${h.data}</td><td style="font-weight:500;color:var(--ink)">${h.titulo||h.id}</td><td><span class="pc-badge ${h.tipo==='quiz'?'ps':h.tipo==='mensal'?'pm':'pt'}">${h.tipo}</span></td><td>${h.acertos||0}/${h.total||10}</td><td class="${cls}">${h.pct||0}%</td></tr>`;}).join('')}</tbody></table><div style="text-align:right;margin-top:14px"><button class="btn btn-ghost btn-sm" onclick="if(confirm('Apagar histórico?')){DB.historico=[];save();showProvas();}">🗑 Limpar</button></div>`;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // SEARCH
 // ══════════════════════════════════════════════════
@@ -1231,7 +1231,7 @@ function doSearch(q){
 }
 function getSnip(t,q){const i=t.toLowerCase().indexOf(q.toLowerCase());if(i<0)return t.slice(0,120)+'...';const s=Math.max(0,i-50),e=Math.min(t.length,i+q.length+90);return(s>0?'…':'')+t.slice(s,e)+(e<t.length?'…':'');}
 function clearSearch(){document.getElementById('search-input').value='';if(aulaAtual)showChapter(aulaAtual.id);else showView('dashboard');}
-
+ 
 // ══════════════════════════════════════════════════
 // MODAIS
 // ══════════════════════════════════════════════════
@@ -1279,10 +1279,10 @@ function openModal(tipo, data){
     document.getElementById('modal-acts').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarMeta()">Salvar</button>`;
   }
 }
-
+ 
 function closeModal(){document.getElementById('modal-ov').classList.remove('open');}
 document.getElementById('modal-ov').addEventListener('click',function(e){if(e.target===this)closeModal();});
-
+ 
 function salvarAula(){
   const num=parseInt(document.getElementById('f-num').value);
   const titulo=document.getElementById('f-titulo').value.trim();
@@ -1300,7 +1300,7 @@ function salvarAula(){
   };
   DB.aulas.push(nova);save();closeModal();renderNav();showChapter(nova.id);
 }
-
+ 
 function salvarTarefa(){
   const titulo=document.getElementById('ft-titulo').value.trim();
   const data=document.getElementById('ft-data').value;
@@ -1311,7 +1311,7 @@ function salvarTarefa(){
   else if(currentView==='dashboard-view')renderDashboard();
   renderNav();
 }
-
+ 
 function salvarMeta(){
   const texto=document.getElementById('fm-texto').value.trim();
   if(!texto){alert('Preencha a descrição.');return;}
@@ -1319,7 +1319,7 @@ function salvarMeta(){
   DB.metas.push({id:'m'+Date.now(),fase:parseInt(document.getElementById('fm-fase').value),texto,prazo:document.getElementById('fm-prazo').value||todayPlus(90),link:document.getElementById('fm-link').value.trim(),done:false});
   save();closeModal();renderMetas();
 }
-
+ 
 function parseQuiz(raw){
   if(!raw||!raw.trim())return[];
   const qs=[];
@@ -1338,7 +1338,7 @@ function parseQuiz(raw){
   });
   return qs;
 }
-
+ 
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
